@@ -1,6 +1,7 @@
 /**
  * Value Labels Plugin for flot.
  * http://leonardoeloy.github.com/flot-valuelabels
+ * http://wiki.github.com/leonardoeloy/flot-valuelabels/
  *
  * Using canvas.fillText instead of divs, which is better for printing - by Leonardo Eloy, March 2010.
  *
@@ -11,6 +12,7 @@
     var options = {
         valueLabels: {
 	    show: false,
+            showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
             showLastValue: false // Use this to show the label only for the last value in the series
         }
     };
@@ -20,8 +22,11 @@
 	    if (!plot.getOptions().valueLabels.show) return;
             
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
+            var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
             var ctx = plot.getCanvas().getContext("2d");
 	    $.each(plot.getData(), function(ii, series) {
+		    if (showAsHtml) plot.getPlaceholder().find("#valueLabels"+ii).remove();
+		    var html = '<div id="valueLabels' + series.seriesIndex + '" class="valueLabels">';
                     series.seriesIndex = ii;
 		    var last_val = null;
 		    var last_x = -1000;
@@ -47,21 +52,31 @@
 					last_val = val;
 					last_x = xx + val.length*8;
 					last_y = yy;
-                                        
-                                        // Little 5 px padding here helps the number to get
-                                        // closer to points
-                                        x_pos = xx;
-                                        y_pos = yy+6;
+                                        if (showAsHtml) {
+                                            var head = '<div style="left:' + xx + 'px;top:' + yy + 'px;" class="valueLabel';
+                                            var tail = '">' + val + '</div>';
+                                            html+= head + "Light" + tail + head + tail;
+                                        } else {
+                                            // Little 5 px padding here helps the number to get
+                                            // closer to points
+                                            x_pos = xx;
+                                            y_pos = yy+6;
 
-                                        // If the value is on the top of the canvas, we need
-                                        // to push it down a little
-                                        if (yy <= 0) y_pos = 18;
-                                        // The same happens with the x axis
-                                        if (xx >= plot.width()) x_pos = plot.width();
+                                            // If the value is on the top of the canvas, we need
+                                            // to push it down a little
+                                            if (yy <= 0) y_pos = 18;
+                                            // The same happens with the x axis
+                                            if (xx >= plot.width()) x_pos = plot.width();
 
-                                        ctx.fillText(val, x_pos, y_pos);
+                                            ctx.fillText(val, x_pos, y_pos);
+                                        }
 				}
 			}
+
+                        if (showAsHtml) {
+                            html+= "</div>";
+                            plot.getPlaceholder().append(html);
+                        }
 		    }
 		});
         });
