@@ -21,6 +21,7 @@
     function init(plot) {
         plot.hooks.draw.push(function (plot, ctx) {
 	    if (!plot.getOptions().valueLabels.show) return;
+            plot.getPlaceholder().find("#valueLabels"+series.seriesIndex).remove();
             
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
             var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
