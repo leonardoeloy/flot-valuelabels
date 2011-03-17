@@ -15,6 +15,7 @@
 	    show: false,
             showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
             showLastValue: false // Use this to show the label only for the last value in the series
+            plotAxis: 'y' // Set to the axis values you wish to plot
         }
     };
     
@@ -23,7 +24,8 @@
 	    if (!plot.getOptions().valueLabels.show) return;
             
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
-            var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
+            var showAsHtml = plot.getOptions().valueLabels.showAsHtml;\
+            var plotAxis = plot.getOptions().valueLabels.plotAxis;
             var ctx = plot.getCanvas().getContext("2d");
 	    $.each(plot.getData(), function(ii, series) {
                     // Workaround, since Flot doesn't set this value anymore
@@ -39,7 +41,7 @@
 
 			var x = series.data[i][0], y = series.data[i][1];
 			if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
-			var val = y;
+			var val = ( plotAxis === 'x' ) ? x : y;
 
 			if (series.valueLabelFunc) val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
 			val = ""+val;
