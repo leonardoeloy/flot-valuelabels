@@ -15,7 +15,7 @@
 	    show: false,
         showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
         showLastValue: false, // Use this to show the label only for the last value in the series
-        labelFormatter: function(v) {return v}
+        labelFormatter: function(v) {return v} // Format the label value to what you want
         }
     };
     
