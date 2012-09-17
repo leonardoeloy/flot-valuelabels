@@ -13,9 +13,9 @@
     var options = {
         valueLabels: {
 	    show: false,
-            showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
-            showLastValue: false, // Use this to show the label only for the last value in the series
-            labelFormatter: function(v) {return v;} // Format the label value to what you want
+        showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
+        showLastValue: false, // Use this to show the label only for the last value in the series
+        labelFormatter: function(v) {return v}
         }
     };
     
@@ -25,7 +25,7 @@
             
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
             var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
-            var labelFormatter = plot.getOptions().valueLables.labelFormatter;
+            var labelFormatter = plot.getOptions().valueLabels.labelFormatter;
             var ctx = plot.getCanvas().getContext("2d");
 	    $.each(plot.getData(), function(ii, series) {
                     // Workaround, since Flot doesn't set this value anymore
@@ -43,9 +43,10 @@
 			if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
 			var val = y;
 
-			if (series.valueLabelFunc) val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
+			if (series.valueLabelFunc) 
+                val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
 			val = ""+val;
-			val = labelFormatter(val);
+            val = labelFormatter(val);
 
 			if (val!=last_val || i==series.data.length-1) {
 				var xx = series.xaxis.p2c(x)+plot.getPlotOffset().left;
