@@ -22,10 +22,15 @@
     function init(plot) {
         plot.hooks.draw.push(function (plot, ctx) {
 	    if (!plot.getOptions().valueLabels.show) return;
+            plot.getPlaceholder().find("#valueLabels"+series.seriesIndex).remove();
             
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
             var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
             var labelFormatter = plot.getOptions().valueLabels.labelFormatter;
+            var fontcolor = plot.getOptions().valueLabels.fontcolor;
+            var xoffset = plot.getOptions().valueLabels.xoffset;
+            var yoffset = plot.getOptions().valueLabels.yoffset;
+            var font = plot.getOptions().valueLabels.font;
             var ctx = plot.getCanvas().getContext("2d");
 	    $.each(plot.getData(), function(ii, series) {
                     // Workaround, since Flot doesn't set this value anymore
@@ -69,6 +74,13 @@
                                             if (yy <= 0) y_pos = 18;
                                             // The same happens with the x axis
                                             if (xx >= plot.width()) x_pos = plot.width();
+
+                                            if (font) { ctx.font = font; }
+                                            ctx.fillStyle = fontcolor;
+                                            ctx.shadowOffsetX = 0;
+                                            ctx.shadowOffsetY = 0;
+                                            ctx.shadowBlur = 1.5;
+                                            ctx.shadowColor = fontcolor;
 
                                             ctx.fillText(val, x_pos, y_pos);                
                                         } else {
