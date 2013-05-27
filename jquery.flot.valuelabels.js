@@ -25,8 +25,6 @@
 
       if (!plot.getOptions().valueLabels.show) return;
 
-      plot.getPlaceholder().find("#valueLabels"+series.seriesIndex).remove();
-
       var showLastValue  = plot.getOptions().valueLabels.showLastValue;
       var showAsHtml     = plot.getOptions().valueLabels.showAsHtml;
       var plotAxis       = plot.getOptions().valueLabels.plotAxis;
@@ -89,6 +87,7 @@
                 // If the value is on the top of the canvas, we need
                 // to push it down a little
                 if (yy <= 0) y_pos = 18;
+
                 // The same happens with the x axis
                 if (xx >= plot.width()) {
                   x_pos = plot.width();
