@@ -12,11 +12,12 @@
 (function ($) {
   var options = {
     valueLabels: {
-      show: false,
-      showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
-      showLastValue: false, // Use this to show the label only for the last value in the series
-      labelFormatter: function(v) { return v; }, // Format the label value to what you want
-      plotAxis: 'y' // Set to the axis values you wish to plot
+      show:            false,
+      showAsHtml:      false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
+      showLastValue:   false, // Use this to show the label only for the last value in the series
+      labelFormatter:  function(v) { return v }, // Format the label value to what you want
+      align:           'start', // can also be 'center', 'left' or 'right'
+      plotAxis:        'y' // Set to the axis values you wish to plot
     }
   }
 
@@ -32,6 +33,7 @@
       var fontcolor      = plot.getOptions().valueLabels.fontcolor;
       var xoffset        = plot.getOptions().valueLabels.xoffset;
       var yoffset        = plot.getOptions().valueLabels.yoffset;
+      var align          = plot.getOptions().valueLabels.align
       var font           = plot.getOptions().valueLabels.font;
       var ctx            = plot.getCanvas().getContext("2d");
 
@@ -102,6 +104,7 @@
                 ctx.shadowOffsetY = 0;
                 ctx.shadowBlur    = 1.5;
                 ctx.shadowColor   = fontcolor;
+                ctx.textAlign     = align;
 
                 ctx.fillText(val, x_pos, y_pos);
               }
