@@ -18,12 +18,12 @@
         labelFormatter: function(v) {return v} // Format the label value to what you want
         }
     };
-    
+
     function init(plot) {
         plot.hooks.draw.push(function (plot, ctx) {
 	    if (!plot.getOptions().valueLabels.show) return;
             plot.getPlaceholder().find("#valueLabels"+series.seriesIndex).remove();
-            
+
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
             var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
             var labelFormatter = plot.getOptions().valueLabels.labelFormatter;
@@ -37,7 +37,7 @@
                     series.seriesIndex = ii;
 		    if (showAsHtml) plot.getPlaceholder().find("#valueLabels"+ii).remove();
 		    var html = '<div id="valueLabels' + series.seriesIndex + '" class="valueLabels">';
-                    
+
 		    var last_val = null;
 		    var last_x = -1000;
 		    var last_y = -1000;
@@ -50,7 +50,7 @@
 			if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
 			var val = y;
 
-			if (series.valueLabelFunc) 
+			if (series.valueLabelFunc)
                 val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
 			val = ""+val;
             val = labelFormatter(val);
@@ -62,7 +62,7 @@
 					last_val = val;
 					last_x = xx + val.length*8;
 					last_y = yy;
-                                        
+
                                         if (!showAsHtml) {
                                             // Little 5 px padding here helps the number to get
                                             // closer to points
@@ -82,7 +82,7 @@
                                             ctx.shadowBlur = 1.5;
                                             ctx.shadowColor = fontcolor;
 
-                                            ctx.fillText(val, x_pos, y_pos);                
+                                            ctx.fillText(val, x_pos, y_pos);
                                         } else {
                                             var head = '<div style="left:' + xx + 'px;top:' + yy + 'px;" class="valueLabel';
                                             var tail = '">' + val + '</div>';
@@ -91,7 +91,7 @@
 				}
 			}
 		    }
-                    
+
                     if (showAsHtml) {
                         html+= "</div>";
                         plot.getPlaceholder().append(html);
@@ -99,7 +99,7 @@
 		});
         });
     }
-    
+
     $.plot.plugins.push({
         init: init,
         options: options,
