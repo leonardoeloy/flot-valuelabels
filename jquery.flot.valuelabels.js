@@ -12,57 +12,57 @@
 (function ($) {
     var options = {
         valueLabels: {
-	    show: false,
+        show: false,
         showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
         showLastValue: false, // Use this to show the label only for the last value in the series
         labelFormatter: function(v) {return v} // Format the label value to what you want
+        plotAxis: 'y' // Set to the axis values you wish to plot
         }
     };
 
     function init(plot) {
         plot.hooks.draw.push(function (plot, ctx) {
-	    if (!plot.getOptions().valueLabels.show) return;
+        if (!plot.getOptions().valueLabels.show) return;
             plot.getPlaceholder().find("#valueLabels"+series.seriesIndex).remove();
 
             var showLastValue = plot.getOptions().valueLabels.showLastValue;
             var showAsHtml = plot.getOptions().valueLabels.showAsHtml;
+            var plotAxis = plot.getOptions().valueLabels.plotAxis;
             var labelFormatter = plot.getOptions().valueLabels.labelFormatter;
             var fontcolor = plot.getOptions().valueLabels.fontcolor;
             var xoffset = plot.getOptions().valueLabels.xoffset;
             var yoffset = plot.getOptions().valueLabels.yoffset;
             var font = plot.getOptions().valueLabels.font;
             var ctx = plot.getCanvas().getContext("2d");
-	    $.each(plot.getData(), function(ii, series) {
+        $.each(plot.getData(), function(ii, series) {
                     // Workaround, since Flot doesn't set this value anymore
                     series.seriesIndex = ii;
-		    if (showAsHtml) plot.getPlaceholder().find("#valueLabels"+ii).remove();
-		    var html = '<div id="valueLabels' + series.seriesIndex + '" class="valueLabels">';
+            if (showAsHtml) plot.getPlaceholder().find("#valueLabels"+ii).remove();
+            var html = '<div id="valueLabels' + series.seriesIndex + '" class="valueLabels">';
+            var last_val = null;
+            var last_x = -1000;
+            var last_y = -1000;
+            var categories = series.xaxis.options.mode == 'categories';
+            for (var i = 0; i < series.data.length; ++i) {
+            if (series.data[i] == null || (showLastValue && i != series.data.length-1))  continue;
 
-		    var last_val = null;
-		    var last_x = -1000;
-		    var last_y = -1000;
-		    var categories = series.xaxis.options.mode == 'categories';
-		    for (var i = 0; i < series.data.length; ++i) {
-			if (series.data[i] == null || (showLastValue && i != series.data.length-1))  continue;
+            var x = series.data[i][0], y = series.data[i][1];
+            if (categories) x = series.xaxis.categories[x]
+            if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
+            var val = ( plotAxis === 'x' ) ? x : y;
 
-			var x = series.data[i][0], y = series.data[i][1];
-			if (categories) x = series.xaxis.categories[x]
-			if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
-			var val = y;
-
-			if (series.valueLabelFunc)
+            if (series.valueLabelFunc)
                 val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
-			val = ""+val;
+            val = ""+val;
             val = labelFormatter(val);
 
-			if (val!=last_val || i==series.data.length-1) {
-				var xx = series.xaxis.p2c(x)+plot.getPlotOffset().left;
-				var yy = series.yaxis.p2c(y)-12+plot.getPlotOffset().top;
-				if (Math.abs(yy-last_y)>20 || last_x<xx) {
-					last_val = val;
-					last_x = xx + val.length*8;
-					last_y = yy;
-
+            if (val!=last_val || i==series.data.length-1) {
+                var xx = series.xaxis.p2c(x)+plot.getPlotOffset().left;
+                var yy = series.yaxis.p2c(y)-12+plot.getPlotOffset().top;
+                if (Math.abs(yy-last_y)>20 || last_x<xx) {
+                    last_val = val;
+                    last_x = xx + val.length*8;
+                    last_y = yy;
                                         if (!showAsHtml) {
                                             // Little 5 px padding here helps the number to get
                                             // closer to points
@@ -88,18 +88,16 @@
                                             var tail = '">' + val + '</div>';
                                             html+= head + "Light" + tail + head + tail;
                                         }
-				}
-			}
-		    }
-
+                }
+            }
+            }
                     if (showAsHtml) {
                         html+= "</div>";
                         plot.getPlaceholder().append(html);
                     }
-		});
+        });
         });
     }
-
     $.plot.plugins.push({
         init: init,
         options: options,
