@@ -36,10 +36,12 @@
 		    var last_val = null;
 		    var last_x = -1000;
 		    var last_y = -1000;
+		    var categories = series.xaxis.options.mode == 'categories';
 		    for (var i = 0; i < series.data.length; ++i) {
 			if (series.data[i] == null || (showLastValue && i != series.data.length-1))  continue;
 
 			var x = series.data[i][0], y = series.data[i][1];
+			if (categories) x = series.xaxis.categories[x]
 			if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
 			var val = y;
 
