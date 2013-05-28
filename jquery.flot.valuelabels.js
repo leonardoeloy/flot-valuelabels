@@ -17,9 +17,10 @@
       showLastValue:   false, // Use this to show the label only for the last value in the series
       labelFormatter:  function(v) { return v; }, // Format the label value to what you want
       align:           'start', // can also be 'center', 'left' or 'right'
-      plotAxis:        'y' // Set to the axis values you wish to plot
+      plotAxis:        'y', // Set to the axis values you wish to plot
+      hideZero:        false
     }
-  }
+  };
 
   function init(plot) {
     plot.hooks.draw.push( function (plot, ctx) {
@@ -36,6 +37,7 @@
       var align          = plot.getOptions().valueLabels.align;
       var font           = plot.getOptions().valueLabels.font;
       // var ctx            = plot.getCanvas().getContext("2d");
+      var hideZero       = plot.getOptions().valueLabels.hideZero;
 
       $.each(plot.getData(), function(ii, series) {
         // Workaround, since Flot doesn't set this value anymore
@@ -64,6 +66,8 @@
           if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max)  continue;
 
           var val = ( plotAxis === 'x' ) ? x : y;
+
+          if ( val === 0 && hideZero ) continue;
 
           if (series.valueLabelFunc) {
             val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
