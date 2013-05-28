@@ -15,7 +15,7 @@
       show:            false,
       showAsHtml:      false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
       showLastValue:   false, // Use this to show the label only for the last value in the series
-      labelFormatter:  function(v) { return v }, // Format the label value to what you want
+      labelFormatter:  function(v) { return v; }, // Format the label value to what you want
       align:           'start', // can also be 'center', 'left' or 'right'
       plotAxis:        'y' // Set to the axis values you wish to plot
     }
@@ -33,9 +33,9 @@
       var fontcolor      = plot.getOptions().valueLabels.fontcolor;
       var xoffset        = plot.getOptions().valueLabels.xoffset;
       var yoffset        = plot.getOptions().valueLabels.yoffset;
-      var align          = plot.getOptions().valueLabels.align
+      var align          = plot.getOptions().valueLabels.align;
       var font           = plot.getOptions().valueLabels.font;
-      var ctx            = plot.getCanvas().getContext("2d");
+      // var ctx            = plot.getCanvas().getContext("2d");
 
       $.each(plot.getData(), function(ii, series) {
         // Workaround, since Flot doesn't set this value anymore
@@ -53,7 +53,7 @@
 
         for (var i = 0; i < series.data.length; ++i) {
 
-          if (series.data[i] == null || (showLastValue && i != series.data.length-1))  continue;
+          if (series.data[i] === null || (showLastValue && i != series.data.length-1))  continue;
 
           var x = series.data[i][0], y = series.data[i][1];
 
@@ -120,8 +120,8 @@
           html += "</div>";
           plot.getPlaceholder().append(html);
         }
-      })
-    })
+      });
+    });
   }
 
   $.plot.plugins.push({
@@ -129,6 +129,6 @@
     options: options,
     name: 'valueLabels',
     version: '1.1'
-  })
-})(jQuery)
+  });
+})(jQuery);
 
