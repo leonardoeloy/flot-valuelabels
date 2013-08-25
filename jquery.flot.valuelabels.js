@@ -11,35 +11,36 @@
  */
 (function ($) {
   var options = {
-    valueLabels: {
-      show:            false,
-      showAsHtml:      false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
-      showLastValue:   false, // Use this to show the label only for the last value in the series
-      labelFormatter:  function(v) { return v; }, // Format the label value to what you want
-      align:           'start', // can also be 'center', 'left' or 'right'
-      plotAxis:        'y', // Set to the axis values you wish to plot
-      hideZero:        false
-    }
+      series: {
+          valueLabels: {
+              show:            false,
+              showAsHtml:      false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
+              showLastValue:   false, // Use this to show the label only for the last value in the series
+              labelFormatter:  function(v) { return v; }, // Format the label value to what you want
+              align:           'start', // can also be 'center', 'left' or 'right'
+              plotAxis:        'y', // Set to the axis values you wish to plot
+              hideZero:        false
+          }
+      }
   };
 
   function init(plot) {
     plot.hooks.draw.push( function (plot, ctx) {
 
-      if (!plot.getOptions().valueLabels.show) return;
-
-      var showLastValue  = plot.getOptions().valueLabels.showLastValue;
-      var showAsHtml     = plot.getOptions().valueLabels.showAsHtml;
-      var plotAxis       = plot.getOptions().valueLabels.plotAxis;
-      var labelFormatter = plot.getOptions().valueLabels.labelFormatter;
-      var fontcolor      = plot.getOptions().valueLabels.fontcolor;
-      var xoffset        = plot.getOptions().valueLabels.xoffset;
-      var yoffset        = plot.getOptions().valueLabels.yoffset;
-      var align          = plot.getOptions().valueLabels.align;
-      var font           = plot.getOptions().valueLabels.font;
-      // var ctx            = plot.getCanvas().getContext("2d");
-      var hideZero       = plot.getOptions().valueLabels.hideZero;
 
       $.each(plot.getData(), function(ii, series) {
+        if (!series.valueLabels.show) return;
+
+        var showLastValue  = series.valueLabels.showLastValue;
+        var showAsHtml     = series.valueLabels.showAsHtml;
+        var plotAxis       = series.valueLabels.plotAxis;
+        var labelFormatter = series.valueLabels.labelFormatter;
+        var fontcolor      = series.valueLabels.fontcolor;
+        var xoffset        = series.valueLabels.xoffset;
+        var yoffset        = series.valueLabels.yoffset;
+        var align          = series.valueLabels.align;
+        var font           = series.valueLabels.font;
+        var hideZero       = series.valueLabels.hideZero;
         // Workaround, since Flot doesn't set this value anymore
         series.seriesIndex = ii;
 
@@ -69,8 +70,8 @@
 
           if ( val === 0 && hideZero ) continue;
 
-          if (series.valueLabelFunc) {
-            val = series.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
+          if (series.valueLabels.valueLabelFunc) {
+            val = series.valueLabels.valueLabelFunc({ series: series, seriesIndex: ii, index: i });
           }
 
           val = "" + val;
