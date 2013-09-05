@@ -68,6 +68,8 @@
 
           var val = ( plotAxis === 'x' ) ? x : y;
 
+	  if(val == null){val=''}
+	  
           if ( val === 0 && hideZero ) continue;
 
           if (series.valueLabels.valueLabelFunc) {
@@ -103,12 +105,15 @@
                 if (font) {
                   ctx.font = font;
                 }
-
-                ctx.fillStyle     = fontcolor;
+		if(typeof(fontcolor) != 'undefined'){
+                  ctx.fillStyle     = fontcolor;
+		}
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 0;
                 ctx.shadowBlur    = 1.5;
-                ctx.shadowColor   = fontcolor;
+		if(typeof(fontcolor) != 'undefined'){
+                  ctx.shadowColor   = fontcolor;
+		}
                 ctx.textAlign     = align;
 
                 ctx.fillText(val, x_pos, y_pos);
