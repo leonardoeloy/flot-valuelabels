@@ -19,7 +19,8 @@
               labelFormatter:  function(v) { return v; }, // Format the label value to what you want
               align:           'start', // can also be 'center', 'left' or 'right'
               plotAxis:        'y', // Set to the axis values you wish to plot
-              hideZero:        false
+              hideZero:        false,
+              hideSame:        true // Hide consecutive labels of the same value
           }
       }
   };
@@ -41,6 +42,7 @@
         var align          = series.valueLabels.align;
         var font           = series.valueLabels.font;
         var hideZero       = series.valueLabels.hideZero;
+        var hideSame       = series.valueLabels.hideSame;
         // Workaround, since Flot doesn't set this value anymore
         series.seriesIndex = ii;
 
@@ -79,7 +81,7 @@
           val = "" + val;
           val = labelFormatter(val);
 
-          if (val != last_val || i == series.data.length - 1) {
+          if (!hideSame || val != last_val || i == series.data.length - 1) {
             var xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
             var yy = series.yaxis.p2c(y) - 12 + plot.getPlotOffset().top;
 
