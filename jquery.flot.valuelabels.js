@@ -85,7 +85,7 @@
             var xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
             var yy = series.yaxis.p2c(y) - 12 + plot.getPlotOffset().top;
 
-            if ( Math.abs(yy - last_y) > 20 || last_x < xx) {
+            if ( !hideSame || Math.abs(yy - last_y) > 20 || last_x < xx) {
               last_val = val;
               last_x = xx + val.length * 8;
               last_y = yy;
