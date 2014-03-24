@@ -100,7 +100,7 @@
                 if (yy <= 0) y_pos = 18;
 
                 // The same happens with the x axis
-                if (xx >= plot.width()) {
+                if (xx >= plot.width() + plot.getPlotOffset().left) {
                   x_pos = plot.width();
                 }
 
