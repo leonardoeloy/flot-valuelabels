@@ -37,8 +37,8 @@
         var plotAxis       = series.valueLabels.plotAxis;
         var labelFormatter = series.valueLabels.labelFormatter;
         var fontcolor      = series.valueLabels.fontcolor;
-        var xoffset        = series.valueLabels.xoffset;
-        var yoffset        = series.valueLabels.yoffset;
+        var xoffset        = series.valueLabels.xoffset || 0;
+        var yoffset        = series.valueLabels.yoffset || 0;
         var align          = series.valueLabels.align;
         var font           = series.valueLabels.font;
         var hideZero       = series.valueLabels.hideZero;
@@ -92,8 +92,8 @@
               if (!showAsHtml) {
                 // Little 5 px padding here helps the number to get
                 // closer to points
-                x_pos = xx;
-                y_pos = yy + 6;
+                x_pos = xx + xoffset;
+                y_pos = yy + 6 + yoffset;
 
                 // If the value is on the top of the canvas, we need
                 // to push it down a little
