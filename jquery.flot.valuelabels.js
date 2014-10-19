@@ -103,12 +103,14 @@
                      doWork = true;
                      var xdelta = xoffsetMin;
                      var ydelta = yoffsetMin;
+                     showMinValue = false;
                   }
                   else if (showMaxValue && ((yMax == y && plotAxis == 'y') || (xMax == x && plotAxis == 'x')))
                   {
                      doWork = true;
                      var xdelta = xoffsetMax;
                      var ydelta = yoffsetMax;
+                     showMaxValue = false;
                   }
                   else if (showLastValue && i == series.data.length-1)
                   {
@@ -210,7 +212,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.3'
+      version: '1.3.1'
    });
 }
 )(jQuery);
