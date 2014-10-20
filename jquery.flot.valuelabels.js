@@ -1,7 +1,11 @@
 /**
 * Value Labels Plugin for flot.
-* http://leonardoeloy.github.com/flot-valuelabels
-* http://wiki.github.com/leonardoeloy/flot-valuelabels/
+* https://github.com/winne27/flot-valuelabels
+* https://github.com/winne27/flot-valuelabels/wiki
+*
+* Implemented some new options (useDecimalComma, showMinValue, showMaxValue)
+* changed some default values: align now defaults to center, hideSame now defaults to false
+* by Werner Schäffer, October 2014
 *
 * Using canvas.fillText instead of divs, which is better for printing - by Leonardo Eloy, March 2010.
 * Tested with Flot 0.6 and JQuery 1.3.2.
@@ -26,7 +30,7 @@
             {
                return v;
             }, // Format the label value to what you want
-            align: 'start', // can also be 'center', 'left' or 'right'
+            align: 'center', // can also be 'center', 'left' or 'right'
             useDecimalComma: false,
             plotAxis: 'y', // Set to the axis values you wish to plot
             hideZero: false,
@@ -217,7 +221,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.3.2'
+      version: '1.3.3'
    });
 }
 )(jQuery);
