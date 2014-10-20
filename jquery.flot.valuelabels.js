@@ -170,7 +170,12 @@
                         // The same happens with the x axis
                         if (xx >= plot.width() + plot.getPlotOffset().left)
                         {
-                           x_pos = plot.width();
+                           x_pos = plot.width() + plot.getPlotOffset().left + xdelta - 3;
+                           var actAlign = 'right';
+                        }
+                        else
+                        {
+                           var actAlign = align;
                         }
                         if (font)
                         {
@@ -187,7 +192,7 @@
                         {
                            ctx.shadowColor = fontcolor;
                         }
-                        ctx.textAlign = align;
+                        ctx.textAlign = actAlign;
                         ctx.fillText(val, x_pos, y_pos);
                      }
                      else
@@ -212,7 +217,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.3.1'
+      version: '1.3.2'
    });
 }
 )(jQuery);

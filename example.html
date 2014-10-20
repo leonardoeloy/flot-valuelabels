@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Test flot-valuelabels</title>
+  <title>Examples flot-valuelabels</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
   <script src="https://raw.githubusercontent.com/flot/flot/master/jquery.flot.js" type="text/javascript"></script>
   <script src="https://raw.githubusercontent.com/winne27/flot-valuelabels/master/jquery.flot.valuelabels.js" type="text/javascript"></script>
@@ -19,6 +19,7 @@
                show: true,
                showMaxValue: true,
                showMinValue: true,
+               showLastValue: true,
                yoffset: 1,
                yoffsetMin: 20,
                align: 'center',
@@ -28,7 +29,7 @@
             }
          },
          {
-            data: [[1,4],[2,2],[3,6],[4,9],[5,5],[6,3.5]],
+            data: [[1,4],[2,2.3],[3,6],[4,9],[5,5],[6,3.5],[7,2.5],[8,4]],
             color: '#FF0000',
             valueLabels:
             {
@@ -37,6 +38,7 @@
                showMaxValue: true,
                showLastValue: true,
                yoffsetMax: 2,
+               yoffsetLast: 2,
                yoffset: 19,
                align: 'center',
                font: "9pt 'Trebuchet MS'",
@@ -47,28 +49,11 @@
 
          options =
          {
-            title: 'dies und das',
-            series:
-            {
-               lines:
-               {
-                   show: true
-               }
-            },
-            yaxis:
-            {
-               min: 0,
-               max: 14,
-               tickSize: 2,
-               tickDecimals: 0
-            }
+            series: {lines: {show: true}},
+            yaxis: {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
          };
-         $.plot
-         (
-            $('#labelTest1'),
-            data,
-            options
-         );
+
+         $.plot($('#labelTest1'),data,options);
 
          // --------------------------------------------------------------------------------------
          // second plot example - show only min and max Valuelabel
@@ -93,41 +78,19 @@
 
          options =
          {
-            series:
-            {
-               bars:
-               {
-                   show: true
-               }
-            },
-            bars:
-            {
-                align: "center",
-                barWidth: 0.7,
-                lineWidth: 1,
-                fillColor: '#ffff00'
-            },
-            yaxis:
-            {
-               min: 0,
-               max: 14,
-               tickSize: 2,
-               tickDecimals: 0
-            }
+            series: {bars: {show: true}},
+            bars:   {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#ffff00'},
+            yaxis:  {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
          };
-         $.plot
-         (
-            $('#labelTest2'),
-            data,
-            options
-         );
+
+         $.plot($('#labelTest2'), data, options);
 
          // --------------------------------------------------------------------------------------
          // third plot example - all Valuelabels
          // --------------------------------------------------------------------------------------
          data =
          [{
-            data: [[1,9],[2,7],[3,8],[4,8],[5,11.6],[6,6],[7,5],[8,7]],
+            data: [[1,9.2],[2,7],[3,8.5],[4,8.0],[5,11.6],[6,6],[7,5],[8,7]],
             color: '#222222'
          }];
 
@@ -135,40 +98,31 @@
          {
             series:
             {
-               bars:
-               {
-                   show: true
-               },
+               bars: {show: true},
                valueLabels:
                {
                   show: true,
+                  labelFormatter: function(v)
+                  {
+                     return (+v).toFixed(1);
+                  },
                   yoffset: 1,
                   align: 'center',
                   font: "9pt 'Trebuchet MS'",
                   fontcolor: 'blue'
                }
             },
-            bars:
-            {
-                align: "center",
-                barWidth: 0.7,
-                lineWidth: 1,
-                fillColor: '#0000FF'
-            },
-            yaxis:
-            {
-               min: 0,
-               max: 14,
-               tickSize: 2,
-               tickDecimals: 0
-            }
+            bars:  {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#0000FF'},
+            yaxis: {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
          };
+
          $.plot
          (
             $('#labelTest3'),
             data,
             options
          );
+
          // --------------------------------------------------------------------------------------
          // fourd plot example - Valuelabels formatted
          // --------------------------------------------------------------------------------------
@@ -182,10 +136,7 @@
          {
             series:
             {
-               bars:
-               {
-                   show: true
-               },
+               bars: {show: true},
                valueLabels:
                {
                   show: true,
@@ -198,25 +149,11 @@
                   }
                }
             },
-            bars:
-            {
-                align: "center",
-                barWidth: 0.7,
-                lineWidth: 1,
-                fillColor: '#00FFFF'
-            },
-            yaxis:
-            {
-               min: 0,
-               tickDecimals: 0
-            }
+            bars:  {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#00FFFF'},
+            yaxis: {min: 0, tickDecimals: 0}
          };
-         $.plot
-         (
-            $('#labelTest4'),
-            data,
-            options
-         );
+
+         $.plot($('#labelTest4'), data, options);
       }
   </script>
 </head>
