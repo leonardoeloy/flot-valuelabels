@@ -6,4 +6,4 @@ Examples:
 
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example.png)
 
-The source code for this examples see ![here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
+The source code for this examples find ![here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
