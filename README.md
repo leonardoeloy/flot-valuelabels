@@ -1,4 +1,4 @@
-h2: What is new in Version 1.3
+What is new in Version 1.3
 
 * Implemented some new options (useDecimalComma, showMinValue, showMaxValue)
 * changed some default values: align now defaults to center, hideSame now defaults to false
