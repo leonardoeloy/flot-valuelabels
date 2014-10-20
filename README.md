@@ -1,3 +1,8 @@
+h2: What is new in Version 1.3
+
+* Implemented some new options (useDecimalComma, showMinValue, showMaxValue)
+* changed some default values: align now defaults to center, hideSame now defaults to false
+
 This project was formerly maintained by [Leonardo Eloy](http://www.github.com/leonardoeloy).
 
 For documentation look [here](https://github.com/winne27/flot-valuelabels/wiki).
