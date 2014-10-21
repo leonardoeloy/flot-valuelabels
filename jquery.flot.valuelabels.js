@@ -43,6 +43,9 @@
    {
       plot.hooks.draw.push(function (plot, ctx)
       {
+	 // keep a running total between series for stacked bars.
+         var stacked = {};
+
          $.each(plot.getData(), function(ii, series)
          {
             if (!series.valueLabels.show) return;
@@ -66,6 +69,7 @@
             var hideZero = series.valueLabels.hideZero;
             var hideSame = series.valueLabels.hideSame;
             var useDecimalComma = series.valueLabels.useDecimalComma;
+            var stackedbar = series.stack;
             // Workaround, since Flot doesn't set this value anymore
             series.seriesIndex = ii;
             if (showAsHtml)
@@ -98,6 +102,15 @@
             {
                if (series.data[i] === null) continue;
                var x = series.data[i][0], y = series.data[i][1];
+
+		// add up y axis for stacked series
+		var addstack = 0;
+                if(stackedbar) {
+		    if(!stacked[x]) stacked[x] = 0.0;
+		    addstack = stacked[x];
+		    stacked[x] = stacked[x] + y;
+                    hideZero = 1;  //they will overlap now.
+		}
 
                if (notShowAll)
                {
@@ -156,7 +169,7 @@
                if (!hideSame || val != last_val || i == series.data.length - 1)
                {
                   var xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
-                  var yy = series.yaxis.p2c(y) - 12 + plot.getPlotOffset().top;
+                  var yy = series.yaxis.p2c(y + addstack) - 12 + plot.getPlotOffset().top;
                   if (!hideSame || Math.abs(yy - last_y) > 20 || last_x < xx)
                   {
                      last_val = val;
@@ -201,6 +214,10 @@
                      }
                      else
                      {
+			//allow same offsets for html rendering
+ 			xx = xx + xoffset;
+			yy = yy + 6 + yoffset;
+
                         var head = '<div style="left:' + xx + 'px;top:' + yy + 'px;" class="valueLabel';
                         var tail = '">' + val + '</div>';
                         html += head + "Light" + tail + head + tail;
