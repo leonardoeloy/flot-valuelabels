@@ -21,4 +21,4 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example.png)
 
-For source code of this examples look [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
+For the source code of this examples look [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
