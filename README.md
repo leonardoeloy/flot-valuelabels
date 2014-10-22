@@ -1,9 +1,9 @@
 <h3>Fixes in 1.3.4</h3> 
 (by [rockcockerham](http://www.github.com/rickcockerham))
 
-This will add the y value for each bar segment to a running total. The way it was before it would place the label where it would be if the bars weren't stacked.
+* This will add the y value for each bar segment to a running total. The way it was before it would place the label where it would be if the bars weren't stacked.
 
-I threw in the ability to add x and y offsets for html rendering.
+* Threw in the ability to add x and y offsets for html rendering.
 
 <h3>New in Version 1.3</h3>
 
