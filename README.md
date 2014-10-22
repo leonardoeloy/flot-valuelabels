@@ -1,4 +1,4 @@
-Fixes in 1.3.4 (by [rockcockerham]
+Fixes in 1.3.4 (by [rockcockerham](http://www.github.com/rickcockerham))
 
 This will add the y value for each bar segment to a running total. The way it was before it would place the label where it would be if the bars weren't stacked.
 
