@@ -103,14 +103,15 @@
                if (series.data[i] === null) continue;
                var x = series.data[i][0], y = series.data[i][1];
 
-		// add up y axis for stacked series
-		var addstack = 0;
-                if(stackedbar) {
-		    if(!stacked[x]) stacked[x] = 0.0;
-		    addstack = stacked[x];
-		    stacked[x] = stacked[x] + y;
-                    hideZero = 1;  //they will overlap now.
-		}
+               // add up y axis for stacked series
+               var addstack = 0;
+               if(stackedbar)
+               {
+                  if(!stacked[x]) stacked[x] = 0.0;
+                  addstack = stacked[x];
+                  stacked[x] = stacked[x] + y;
+                  hideZero = 1;  //they will overlap now.
+               }
 
                if (notShowAll)
                {
@@ -214,9 +215,9 @@
                      }
                      else
                      {
-			//allow same offsets for html rendering
- 			xx = xx + xoffset;
-			yy = yy + 6 + yoffset;
+                        //allow same offsets for html rendering
+                        xx = xx + xoffset;
+                        yy = yy + 6 + yoffset;
 
                         var head = '<div style="left:' + xx + 'px;top:' + yy + 'px;" class="valueLabel';
                         var tail = '">' + val + '</div>';
@@ -238,7 +239,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.3.3'
+      version: '1.3.4'
    });
 }
 )(jQuery);
