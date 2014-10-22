@@ -20,4 +20,4 @@ For documentation look [here](https://github.com/winne27/flot-valuelabels/wiki).
 
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example.png)
 
-The source code for this examples look [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
+For source code of this examples look [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
