@@ -12,9 +12,10 @@ I threw in the ability to add x and y offsets for html rendering.
 * documentation improved
 * more examples of usage
 
+<h3>Documantation</h3>
 This project was formerly maintained by [Leonardo Eloy](http://www.github.com/leonardoeloy).
 
-For documentation look [here](https://github.com/winne27/flot-valuelabels/wiki).
+For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h3>Examples</h3>
 
