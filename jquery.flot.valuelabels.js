@@ -81,9 +81,8 @@
             var last_x = -1000;
             var last_y = -1000;
             var categories = series.xaxis.options.mode == 'categories';
-            var notShowAll = showMinValue || showMaxValue || showLastValue;
 
-            if (showMinValue || showMaxValue)
+            if ((showMinValue || showMaxValue) && series.data[0] !== null)
             {
                var xMin = +series.data[0][0];
                var xMax = +series.data[0][0];
@@ -97,7 +96,13 @@
                   if (+series.data[i][1] > yMax) yMax = +series.data[i][1];
                }
             }
+            else
+            {
+               showMinValue = false;
+               showMaxValue = false;
+            }
 
+            var notShowAll = showMinValue || showMaxValue || showLastValue;
             for (var i = 0; i < series.data.length; ++i)
             {
                if (series.data[i] === null) continue;
@@ -165,7 +170,7 @@
                val = labelFormatter(val);
                if (useDecimalComma)
                {
-                  val = val.replace('.', ',');
+                  val = val.toString().replace('.', ',');
                }
                if (!hideSame || val != last_val || i == series.data.length - 1)
                {
