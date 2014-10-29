@@ -1,3 +1,7 @@
+<h3>Fixes in 1.3.5</h3>
+* option useDecimalComma in some cases throwed an exception
+* calculating min and max value crashed if series was empty
+
 <h3>Fixes in 1.3.4</h3> 
 (by [rockcockerham](http://www.github.com/rickcockerham))
 
