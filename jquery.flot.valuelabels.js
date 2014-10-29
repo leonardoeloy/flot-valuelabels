@@ -33,6 +33,7 @@
             align: 'center', // can also be 'center', 'left' or 'right'
             useDecimalComma: false,
             plotAxis: 'y', // Set to the axis values you wish to plot
+            decimals: false,
             hideZero: false,
             hideSame: false // Hide consecutive labels of the same value
          }
@@ -70,6 +71,7 @@
             var hideSame = series.valueLabels.hideSame;
             var useDecimalComma = series.valueLabels.useDecimalComma;
             var stackedbar = series.stack;
+            var decimals = series.valueLabels.decimals;
             // Workaround, since Flot doesn't set this value anymore
             series.seriesIndex = ii;
             if (showAsHtml)
@@ -159,6 +161,13 @@
                   val = ''
                }
                if (val === 0 && hideZero) continue;
+
+               if (decimals !== false)
+               {
+                  var mult = Math.pow(10,decimals);
+                  val = Math.round(val * mult) / mult;
+               }
+
                if (series.valueLabels.valueLabelFunc)
                {
                   val = series.valueLabels.valueLabelFunc(
@@ -244,7 +253,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.3.4'
+      version: '1.4.0'
    });
 }
 )(jQuery);
