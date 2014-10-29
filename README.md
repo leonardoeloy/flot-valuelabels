@@ -1,5 +1,5 @@
 <h3> New in Version 1.4 </h3>
-* option decimals - rounds labels to specified decimals
+* option decimals - rounds label values to specified decimals
 
 <h3>Fixes in 1.3.5</h3>
 * option useDecimalComma in some cases throwed an exception
