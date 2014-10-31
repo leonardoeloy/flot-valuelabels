@@ -89,7 +89,11 @@
             var last_y = -1000;
             var categories = series.xaxis.options.mode == 'categories';
 
+<<<<<<< HEAD
             if ((showMinValue || showMaxValue) && typeof(series.data[0]) != 'undefined')
+=======
+            if ((showMinValue || showMaxValue) && typeof(series.data[0]) != 'undfeined')
+>>>>>>> 4573cdca6a94042002554bf8f5171b867b5f7f28
             {
                var xMin = +series.data[0][0];
                var xMax = +series.data[0][0];
