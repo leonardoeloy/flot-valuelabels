@@ -32,3 +32,5 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example.png)
 
 For the source code of this examples look [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
+
+A webpage with a lot of different valuelabels see [here](https://fehngarten.de/weather/index.html)
