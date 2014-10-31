@@ -1,3 +1,6 @@
+<h3> New in version 1.5 </h3>
+* new option valign - allows placing label on top, below, in the middle or on bottom (merged from [rockcockerham](http://www.github.com/rickcockerham))
+
 <h3> New in Version 1.4 </h3>
 * option decimals - rounds label values to specified decimals
 
