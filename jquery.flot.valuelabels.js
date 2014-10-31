@@ -31,6 +31,7 @@
                return v;
             }, // Format the label value to what you want
             align: 'center', // can also be 'center', 'left' or 'right'
+            valign: 'top', // can also be 'below', 'middle' or 'bottom'
             useDecimalComma: false,
             plotAxis: 'y', // Set to the axis values you wish to plot
             decimals: false,
@@ -66,6 +67,10 @@
             var xoffsetLast = series.valueLabels.xoffsetLast || xoffset;
             var yoffsetLast = series.valueLabels.yoffsetLast || yoffset;
             var align = series.valueLabels.align;
+            var valign = series.valueLabels.valign;
+            var valignLast = series.valueLabels.valignLast || valign;
+            var valignMin = series.valueLabels.valignMin || valign;
+            var valignMax = series.valueLabels.valignMax || valign;
             var font = series.valueLabels.font;
             var hideZero = series.valueLabels.hideZero;
             var hideSame = series.valueLabels.hideSame;
@@ -84,7 +89,7 @@
             var last_y = -1000;
             var categories = series.xaxis.options.mode == 'categories';
 
-            if ((showMinValue || showMaxValue) && typeof(series.data[0]) != `undfeined`)
+            if ((showMinValue || showMaxValue) && typeof(series.data[0]) != 'undefined')
             {
                var xMin = +series.data[0][0];
                var xMax = +series.data[0][0];
@@ -110,16 +115,6 @@
                if (series.data[i] === null) continue;
                var x = series.data[i][0], y = series.data[i][1];
 
-               // add up y axis for stacked series
-               var addstack = 0;
-               if(stackedbar)
-               {
-                  if(!stacked[x]) stacked[x] = 0.0;
-                  addstack = stacked[x];
-                  stacked[x] = stacked[x] + y;
-                  hideZero = 1;  //they will overlap now.
-               }
-
                if (notShowAll)
                {
                   var doWork = false;
@@ -128,6 +123,7 @@
                      doWork = true;
                      var xdelta = xoffsetMin;
                      var ydelta = yoffsetMin;
+                     var valignWork = valignMin;
                      showMinValue = false;
                   }
                   else if (showMaxValue && ((yMax == y && plotAxis == 'y') || (xMax == x && plotAxis == 'x')))
@@ -135,6 +131,7 @@
                      doWork = true;
                      var xdelta = xoffsetMax;
                      var ydelta = yoffsetMax;
+                     var valignWork = valignMax;
                      showMaxValue = false;
                   }
                   else if (showLastValue && i == series.data.length-1)
@@ -142,6 +139,7 @@
                      doWork = true;
                      var xdelta = xoffsetLast;
                      var ydelta = yoffsetLast;
+                     var valignWork = valignLast;
                   }
                   if (!doWork) continue;
                }
@@ -149,6 +147,7 @@
                {
                   var xdelta = xoffset;
                   var ydelta = yoffset;
+                  var valignWork = valign;
                }
                if (categories)
                {
@@ -160,7 +159,7 @@
                {
                   val = ''
                }
-               if (val === 0 && hideZero) continue;
+               if (val === 0 && (hideZero || stackedbar)) continue;
 
                if (decimals !== false)
                {
@@ -183,8 +182,32 @@
                }
                if (!hideSame || val != last_val || i == series.data.length - 1)
                {
+         		   ploty = y;
+         		   if (valignWork == 'bottom')
+                  {
+         		       ploty = 0;
+         		   }
+                  else if (valignWork == 'middle')
+                  {
+         		       ploty = ploty / 2;
+                      ydelta = 11 + ydelta;
+         		   }
+                  else if (valignWork == 'below')
+                  {
+         		       ydelta = 20 + ydelta;
+         		   }
+
+         		   // add up y axis for stacked series
+         		   var addstack = 0;
+                  if (stackedbar)
+                  {
+         		       if (!stacked[x]) stacked[x] = 0.0;
+         		       addstack = stacked[x];
+         		       stacked[x] = stacked[x] + y;
+         		   }
+
                   var xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
-                  var yy = series.yaxis.p2c(y + addstack) - 12 + plot.getPlotOffset().top;
+                  var yy = series.yaxis.p2c(+ploty + addstack) - 12 + plot.getPlotOffset().top;
                   if (!hideSame || Math.abs(yy - last_y) > 20 || last_x < xx)
                   {
                      last_val = val;
@@ -253,11 +276,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-<<<<<<< HEAD
-      version: '1.4.0'
-=======
-      version: '1.3.5'
->>>>>>> origin/master
+      version: '1.5.0'
    });
 }
 )(jQuery);
