@@ -87,7 +87,8 @@
             var last_val = null;
             var last_x = -1000;
             var last_y = -1000;
-            var categories = series.xaxis.options.mode == 'categories';
+            var xCategories = series.xaxis.options.mode == 'categories';
+            var yCategories = series.yaxis.options.mode == 'categories';
 
             if ((showMinValue || showMaxValue) && typeof(series.data[0]) != 'undefined')
             {
@@ -149,9 +150,13 @@
                   var ydelta = yoffset;
                   var valignWork = valign;
                }
-               if (categories)
+               if (xCategories)
                {
                   x = series.xaxis.categories[x];
+               }
+               if (yCategories)
+               {
+                  y = series.yaxis.categories[y];
                }
                if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max) continue;
                var val = (plotAxis === 'x')? x: y;
