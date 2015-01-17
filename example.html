@@ -39,7 +39,8 @@
                showLastValue: true,
                yoffsetMax: 2,
                yoffsetLast: 2,
-               yoffset: 19,
+               valignMin: 'middle',
+               valignMax: 'middle',
                align: 'center',
                font: "9pt 'Trebuchet MS'",
                fontcolor: '#FF0000',
@@ -68,7 +69,7 @@
                showMaxValue: true,
                showMinValue: true,
                yoffset: 1,
-               yoffsetMin: 20,
+               valignMin: 'bottom',
                align: 'center',
                font: "9pt 'Trebuchet MS'",
                fontcolor: 'blue',
@@ -106,10 +107,10 @@
                   {
                      return (+v).toFixed(1);
                   },
-                  yoffset: 1,
+                  valign: 'top',
                   align: 'center',
                   font: "9pt 'Trebuchet MS'",
-                  fontcolor: 'blue'
+                  fontcolor: 'red'
                }
             },
             bars:  {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#0000FF'},
