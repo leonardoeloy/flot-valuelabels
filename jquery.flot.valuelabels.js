@@ -226,7 +226,7 @@
                         y_pos = yy + 6 + ydelta;
                         // If the value is on the top of the canvas, we need
                         // to push it down a little
-                        if (yy <= 0) y_pos = 18;
+                        if (yy <= 0) y_pos = y_pos + 16;
                         // The same happens with the x axis
                         if (xx >= plot.width() + plot.getPlotOffset().left)
                         {
@@ -281,7 +281,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.5.0'
+      version: '1.5.1'
    });
 }
 )(jQuery);
