@@ -36,7 +36,10 @@
             plotAxis: 'y', // Set to the axis values you wish to plot
             decimals: false,
             hideZero: false,
-            hideSame: false // Hide consecutive labels of the same value
+            hideSame: false, // Hide consecutive labels of the same value
+            reverseAlignBelowZero: false, // reverse align and offset for values below 0
+            insideBar: false, // assume label appears inside bar: if horizontal bar is smaller than label, move label next to bar (reverse align, offset and colour)
+            showShadow: true // false to not use canvas text shadow effect
          }
       }
    };
@@ -57,7 +60,6 @@
             var showMinValue = series.valueLabels.showMinValue;
             var plotAxis = series.valueLabels.plotAxis;
             var labelFormatter = series.valueLabels.labelFormatter;
-            var fontcolor = series.valueLabels.fontcolor;
             var xoffset = series.valueLabels.xoffset || 0;
             var yoffset = series.valueLabels.yoffset || 0;
             var xoffsetMin = series.valueLabels.xoffsetMin || xoffset;
@@ -66,7 +68,6 @@
             var yoffsetMax = series.valueLabels.yoffsetMax || yoffset;
             var xoffsetLast = series.valueLabels.xoffsetLast || xoffset;
             var yoffsetLast = series.valueLabels.yoffsetLast || yoffset;
-            var align = series.valueLabels.align;
             var valign = series.valueLabels.valign;
             var valignLast = series.valueLabels.valignLast || valign;
             var valignMin = series.valueLabels.valignMin || valign;
@@ -74,6 +75,9 @@
             var font = series.valueLabels.font;
             var hideZero = series.valueLabels.hideZero;
             var hideSame = series.valueLabels.hideSame;
+            var reverseAlignBelowZero = series.valueLabels.reverseAlignBelowZero;
+            var insideBar = series.valueLabels.insideBar;
+            var showShadow = series.valueLabels.showShadow;
             var useDecimalComma = series.valueLabels.useDecimalComma;
             var stackedbar = series.stack;
             var decimals = series.valueLabels.decimals;
@@ -115,6 +119,8 @@
             {
                if (series.data[i] === null) continue;
                var x = series.data[i][0], y = series.data[i][1];
+               var align = series.valueLabels.align;
+               var fontcolor = series.valueLabels.fontcolor;
 
                if (notShowAll)
                {
@@ -143,6 +149,31 @@
                      var valignWork = valignLast;
                   }
                   if (!doWork) continue;
+               }
+               else if (reverseAlignBelowZero && y < 0 && plotAxis == 'y') {
+                  var xdelta = xoffset;
+                  var ydelta = -1 * yoffset;
+                  if (valign == 'top')
+                  {
+                     valign = 'bottom';
+                  }
+                  else if (valign == 'bottom')
+                  {
+                     valign = 'top';
+                  }
+                  var valignWork = valign;
+               }
+               else if (reverseAlignBelowZero && x < 0 && plotAxis == 'x') {
+                  var xdelta = -1 * xoffset;
+                  var ydelta = yoffset;
+                  var valignWork = valign;
+                  if (align == 'left')
+                  {
+                     align = 'right';
+                  }
+                  else if (align == 'right') {
+                     align = 'left';
+                  }
                }
                else
                {
@@ -187,7 +218,26 @@
                }
                if (!hideSame || val != last_val || i == series.data.length - 1)
                {
-         		   ploty = y;
+                  if (insideBar && plotAxis == 'x') {
+                     if (font)
+                     {
+                        ctx.font = font;
+                     }
+                     if (Math.abs(series.xaxis.p2c(x) - series.xaxis.p2c(0)) < ctx.measureText(val).width + Math.abs(xdelta)) {
+                        xdelta = -1 * xdelta;
+                        if (align == 'left')
+                        {
+                           align = 'right';
+                        }
+                        else if (align == 'right')
+                        {
+                           align = 'left';
+                        }
+                        fontcolor = series.color;
+                    }
+                 }
+
+                   ploty = y;
          		   if (valignWork == 'bottom')
                   {
          		       ploty = 0;
@@ -245,12 +295,14 @@
                         {
                            ctx.fillStyle = fontcolor;
                         }
-                        ctx.shadowOffsetX = 0;
-                        ctx.shadowOffsetY = 0;
-                        ctx.shadowBlur = 1.5;
-                        if(typeof(fontcolor) != 'undefined')
-                        {
-                           ctx.shadowColor = fontcolor;
+                        if (showShadow) {
+                           ctx.shadowOffsetX = 0;
+                           ctx.shadowOffsetY = 0;
+                           ctx.shadowBlur = 1.5;
+                           if(typeof(fontcolor) != 'undefined')
+                           {
+                              ctx.shadowColor = fontcolor;
+                           }
                         }
                         ctx.textAlign = actAlign;
                         ctx.fillText(val, x_pos, y_pos);
