@@ -1,3 +1,6 @@
+<h3>Documentation</h3>
+For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
+
 <h3> New in version 1.6 </h3>
 * Option top is replaced by above (top still works)
 * new options for display label values in a box with customizable background-color and customizable border-color
@@ -31,11 +34,6 @@
 * changed some default values: align now defaults to center, hideSame now defaults to false
 * documentation improved
 * more examples of usage
-
-<h3>Documentation</h3>
-This project was formerly maintained by [Leonardo Eloy](http://www.github.com/leonardoeloy).
-
-For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h3>Examples</h3>
 
