@@ -1,3 +1,9 @@
+<h3> New in version 1.6 </h3>
+* Option top is replaced by above (top still works)
+* new options for display label values in a box with customizable background-color and customizable border-color
+* shadowColor is customizable
+* reverseAlignBelowZero as new option
+
 <h3> New in version 1.5 </h3>
 * new option valign - allows placing label on top, below, in the middle or on bottom (merged from [rockcockerham](http://www.github.com/rickcockerham))
 
