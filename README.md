@@ -1,6 +1,10 @@
 <h3> New in version 1.6 </h3>
 * Option top is replaced by above (top still works)
 * new options for display label values in a box with customizable background-color and customizable border-color
+    useBackground: false, // set label into box with background color
+    backgroundColor: '#cccccc', // set backgroundColor like #FFCC00 or darkred
+    useBorder: false, // use a broder arround the label
+    borderColor: '#999999'
 * shadowColor is customizable
 * reverseAlignBelowZero as new option
 

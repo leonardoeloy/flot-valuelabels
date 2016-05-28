@@ -44,7 +44,8 @@
                     showShadow: true, // false to not use canvas text shadow effect
                     fontcolor: '#222222',
                     shadowColor: false, // false = use ctx default
-                    backgroundColor: false, // set backgroundColor like #FFCC00 or darkred
+                    useBackground: false, // set label into box with background color
+                    backgroundColor: '#cccccc', // set backgroundColor like #FFCC00 or darkred
                     useBorder: false, // use a broder arround the label
                     borderColor: '#999999'
                 }
@@ -316,7 +317,7 @@
                                         ctx.font = font;
                                     }
 
-                                    if (useBorder || backgroundColor)
+                                    if (useBorder || useBackground)
                                     {
                                         var width = ctx.measureText(val).width + 3;
                                         if (width % 2 == 1)
@@ -351,7 +352,7 @@
                                             ctx.strokeStyle = borderColor;
                                             ctx.strokeRect(x_pos + x_diff, y_pos - height + 3, width, height);
                                         }
-                                        if (backgroundColor)
+                                        if (useBackground)
                                         {
                                             ctx.fillStyle = backgroundColor;
                                             ctx.fillRect(x_pos + x_diff, y_pos - height + 3, width, height);
@@ -741,7 +742,7 @@
       init: init,
       options: options,
       name: 'valueLabels',
-      version: '1.6.0'
+      version: '1.6.2'
    });
 }
 )(jQuery);
