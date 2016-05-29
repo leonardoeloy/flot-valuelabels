@@ -91,6 +91,7 @@
                     var useDecimalComma = series.valueLabels.useDecimalComma;
                     var stackedbar = series.stack;
                     var decimals = series.valueLabels.decimals;
+                    var useBackgroundColor = series.valueLabels.useBackground;
                     var backgroundColor = series.valueLabels.backgroundColor;
                     var useBorder = series.valueLabels.useBorder;
                     var borderColor = series.valueLabels.borderColor;
@@ -401,7 +402,7 @@
             init: init,
             options: options,
             name: 'valueLabels',
-            version: '1.6.3'
+            version: '1.6.4'
         });
     }
 )(jQuery);
