@@ -42,3 +42,10 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
 
 A webpage with a lot of different valuelabels see [here](https://fehngarten.de/wetter/index.html)
+
+<h3>Example for plugin ordered bars</h3>
+
+![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example2.png)
+
+You have to adjust the labels by the valuelabel options xoffset and yoffset.
+For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example2.html).
