@@ -60,6 +60,7 @@
 
                 $.each(plot.getData(), function(ii, series)
                 {
+                    console.log(series);
                     if (!series.valueLabels.show) return;
                     var showLastValue = series.valueLabels.showLastValue;
                     var showAsHtml = series.valueLabels.showAsHtml;
@@ -80,9 +81,9 @@
                     var valignMin = series.valueLabels.valignMin || 'below';
                     var valignMax = series.valueLabels.valignMax || 'above';
                     var align = series.valueLabels.align;
-                    var fontcolor = series.valueLabels.fontcolor;
+                    var fontcolor = series.valueLabels.fontcolor || series.color || '#111111';
                     var shadowColor = series.valueLabels.shadowColor || fontcolor;
-                    var font = series.valueLabels.font;
+                    var font = series.valueLabels.font || '9pt san-serif';
                     var hideZero = series.valueLabels.hideZero;
                     var hideSame = series.valueLabels.hideSame;
                     var reverseAlignBelowZero = series.valueLabels.reverseAlignBelowZero;
@@ -245,10 +246,7 @@
 
                             if (insideBar && plotAxis == 'x')
                             {
-                                if (font)
-                                {
-                                    ctx.font = font;
-                                }
+                                ctx.font = font;
                                 if (Math.abs(series.xaxis.p2c(x) - series.xaxis.p2c(0)) < ctx.measureText(val).width + Math.abs(xdelta))
                                 {
                                     xdelta = -1 * xdelta;
@@ -312,10 +310,7 @@
                                     {
                                         var actAlign = align;
                                     }
-                                    if (font)
-                                    {
-                                        ctx.font = font;
-                                    }
+                                    ctx.font = font;
 
                                     if (useBorder || useBackground)
                                     {
@@ -402,7 +397,7 @@
             init: init,
             options: options,
             name: 'valueLabels',
-            version: '1.6.5'
+            version: '1.6.6'
         });
     }
 )(jQuery);
