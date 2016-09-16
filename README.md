@@ -45,6 +45,8 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 
 For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
 
+<h4>Example for using valuelabels and orderBars together</h4>
+
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example2.png)
 
 You have to adjust the labels by the valuelabel options xoffset and yoffset.
