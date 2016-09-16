@@ -1,6 +1,10 @@
 <h3>Documentation</h3>
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
+<h3> New in version 1.7 </h3>
+* Optionally use text labels instead of value labels.
+* Provide minimized script file 
+
 <h3> New in version 1.6 </h3>
 * Option top is replaced by above (top still works)
 * new options for display label values in a box with customizable background-color and customizable border-color
@@ -41,11 +45,16 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 
 For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example.html).
 
-A webpage with a lot of different valuelabels see [here](https://fehngarten.de/wetter/index.html)
-
-<h3>Example for plugin ordered bars</h3>
-
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example2.png)
 
 You have to adjust the labels by the valuelabel options xoffset and yoffset.
 For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example2.html).
+
+![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example3.png)
+
+Use option showTextLabel and deliver with the data object for every point array a text string as third entry.
+For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example3.html).
+
+<h3>More examples</h3>
+
+A webpage with a lot of different valuelabels see [here](https://fehngarten.de/wetter/index.html)

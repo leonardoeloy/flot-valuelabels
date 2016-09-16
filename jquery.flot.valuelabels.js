@@ -18,6 +18,7 @@
         series: {
             valueLabels: {
                 show: false,
+                showTextLabel: false,
                 showMaxValue: false,
                 showMinValue: false,
                 showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
@@ -57,6 +58,7 @@
                 var showAsHtml = series.valueLabels.showAsHtml;
                 var showMaxValue = series.valueLabels.showMaxValue;
                 var showMinValue = series.valueLabels.showMinValue;
+                var showTextLabel = series.valueLabels.showTextLabel;
                 var plotAxis = series.valueLabels.plotAxis;
                 var labelFormatter = series.valueLabels.labelFormatter;
                 var xoffset = series.valueLabels.xoffset || 0;
@@ -122,6 +124,12 @@
                     var x = series.data[i][0],
                         y = series.data[i][1];
 
+                    if (showTextLabel && series.data[i].length > 2) {
+                        t = series.data[i][2];
+                    } else {
+                        t = false;
+                    }
+
                     if (notShowAll) {
                         var doWork = false;
                         if (showMinValue && ((yMin == y && plotAxis == 'y') || (xMin == x && plotAxis == 'x'))) {
@@ -179,15 +187,25 @@
                         y = series.yaxis.categories[y];
                     }
                     if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max) continue;
-                    var val = (plotAxis === 'x') ? x : y;
-                    if (val == null) {
-                        val = ''
-                    }
-                    if (val === 0 && (hideZero || stackedbar)) continue;
 
-                    if (decimals !== false) {
-                        var mult = Math.pow(10, decimals);
-                        val = Math.round(val * mult) / mult;
+                    if (t !== false) {
+                        var val = t;
+                    } else {
+                        var val = (plotAxis === 'x') ? x : y;
+                        if (val == null) {
+                            val = ''
+                        }
+
+                        if (val === 0 && (hideZero || stackedbar)) continue;
+
+                        if (decimals !== false) {
+                            var mult = Math.pow(10, decimals);
+                            val = Math.round(val * mult) / mult;
+                        }
+
+                        if (useDecimalComma) {
+                            val = val.toString().replace('.', ',');
+                        }
                     }
 
                     if (series.valueLabels.valueLabelFunc) {
@@ -199,10 +217,6 @@
                     }
                     val = "" + val;
                     val = labelFormatter(val);
-
-                    if (useDecimalComma) {
-                        val = val.toString().replace('.', ',');
-                    }
 
                     if (!hideSame || val != last_val || i == series.data.length - 1) {
                         if (insideBar && plotAxis == 'x') {
@@ -327,6 +341,6 @@
         init: init,
         options: options,
         name: 'valueLabels',
-        version: '1.6.7'
+        version: '1.7.0'
     });
 })(jQuery);

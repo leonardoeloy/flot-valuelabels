@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Examples flot-valuelabels</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://rawgit.com/flot/flot/master/jquery.flot.js"></script>
+  <!--
+  <script src="https://rawgit.com/winne27/flot-valuelabels/master/jquery.flot.valuelabels.js"></script>
+  -->
+  <script src="jquery.flot.valuelabels.js" type="text/javascript"></script>
+  <script>
+    $(function () {
+         data =
+         [{
+            data: [[1,9,'Roma'],[2,7,'Paris'],[3,8,'Berlin'],[4,8,'Madrid'],[5,11,'Vienna']],
+            color: '#222222',
+            valueLabels:
+            {
+               show: true,
+               showTextLabel: true,
+               yoffset: 1,
+               align: 'center',
+               font: "9pt 'Trebuchet MS'",
+               fontcolor: 'blue'
+            }
+         }];
+
+         options =
+         {
+            series: {bars: {show: true}},
+            bars:   {align: "center", barWidth: 0.8, lineWidth: 1, fillColor: '#ffff00'},
+            xaxis:  {show: false},
+            yaxis:  {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
+         };
+
+         $.plot($('#placeholder'), data, options);
+
+    });
+
+  </script>
+</head>
+
+<body>
+<h4>Example for using text labels</h4>
+<div id="placeholder" style="width:500px;height:400px;"></div>
+</body>
+</html>
