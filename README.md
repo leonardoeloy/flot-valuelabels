@@ -1,6 +1,7 @@
-<h3>Documentation</h3>
+<h2>Documentation</h2>
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
+<h2>History</h2>
 <h3> New in version 1.7 </h3>
 * Optionally use text labels instead of value labels.
 * Provide minimized script file
@@ -39,7 +40,7 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 * documentation improved
 * more examples of usage
 
-<h3>Examples</h3>
+<h2>Examples</h2>
 
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example.png)
 
@@ -52,7 +53,7 @@ For the source code of this examples see [here](https://github.com/winne27/flot-
 You have to adjust the labels by the valuelabel options xoffset and yoffset.
 For the source code of this examples see [here](https://github.com/winne27/flot-valuelabels/blob/master/example2.html).
 
-<h4>Example for using text labels</h4>
+<h3>Example for using text labels</h3>
 ![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example3.png)
 
 Use option showTextLabel and deliver with the data object for every point array a text string as third entry.
