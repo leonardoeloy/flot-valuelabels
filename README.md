@@ -6,10 +6,10 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 * use strict
 * consolidated label positioning
 * horizontal bars supported now
-* new option for horizontal bars: horizAlign with possible values of 'outside', 'insideZero', 'insideCenter' and 'insideMax'
+* new option for horizontal bars: horizAlign with possible values 'outside', 'insideZero', 'insideCenter' or 'insideMax'
 * optionally use text labels instead of value labels.
 * provide minimized script file addionally (jquery.flot.valuelabels.min.js)
-* option useAsHtml not supported anymore
+* options useAsHtml and insideBar not supported anymore
 
 <h3> New in version 1.6 </h3>
 * option top is replaced by above (top still works)
