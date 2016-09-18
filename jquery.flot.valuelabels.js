@@ -14,6 +14,8 @@
  * Released under the MIT license by Petr Blahos, December 2009.
  */
 (function($) {
+    "use strict";
+
     var options = {
         series: {
             valueLabels: {
@@ -21,26 +23,28 @@
                 showTextLabel: false,
                 showMaxValue: false,
                 showMinValue: false,
-                showAsHtml: false, // Set to true if you wanna switch back to DIV usage (you need plot.css for this)
                 showLastValue: false, // Use this to show the label only for the last value in the series
                 labelFormatter: function(v) {
                     return v;
                 },
                 // Format the label value to what you want
-                align: 'center', // can also be 'center', 'left' or 'right'          it is possible for you
+                align: 'center', // can also be 'left' or 'right'
                 valign: 'above', // can also be 'below', 'middle' or 'bottom'
+                valignMin: 'below', // can also be 'above', 'middle' or 'bottom'
+                valignMax: 'above', // can also be 'below', 'middle' or 'bottom'
+                horizAlign: 'insideMax', // can also be 'outside', 'insideCenter' or 'insideZero'
+                xoffset: 0,
+                yoffset: 0,
                 useDecimalComma: false,
-                plotAxis: 'y', // Set to the axis values you wish to plot
                 decimals: false,
                 hideZero: false,
                 hideSame: false, // Hide consecutive labels of the same value
                 reverseAlignBelowZero: false, // reverse align and offset for values below 0
-                insideBar: false, // assume label appears inside bar: if horizontal bar is smaller than label, move label next to bar (reverse align, offset and colour)
-                showShadow: true, // false to not use canvas text shadow effect
-                fontcolor: '#222222',
+                showShadow: false, // false to not use canvas text shadow effect
                 shadowColor: false, // false = use ctx default
                 useBackground: false, // set label into box with background color
                 backgroundColor: '#cccccc', // set backgroundColor like #FFCC00 or darkred
+                fontcolor: '#222222', // set backgroundColor like #FFCC00 or darkred
                 useBorder: false, // use a broder arround the label
                 borderColor: '#999999'
             }
@@ -51,18 +55,43 @@
         plot.hooks.draw.push(function(plot, ctx) {
             // keep a running total between series for stacked bars.
             var stacked = {};
+            var t;
+
+            var x;
+            var xx;
+            var x_bb;
+            var x_pos;
+            var xdelta;
+
+            var y;
+            var yy;
+            var y_bb;
+            var y_pos;
+            var ydelta;
+
+            var valignWork;
+            var horizAlignWork;
+            var notShowAll;
+            var doWork;
+            var val;
+            var actAlign = 'left';
+            var addstack;
+            var height;
+            var width;
+            var bot;
+            var compDelta;
+            var textBaseline;
+            var pointDelta;
 
             $.each(plot.getData(), function(ii, series) {
                 if (!series.valueLabels.show) return;
                 var showLastValue = series.valueLabels.showLastValue;
-                var showAsHtml = series.valueLabels.showAsHtml;
                 var showMaxValue = series.valueLabels.showMaxValue;
                 var showMinValue = series.valueLabels.showMinValue;
                 var showTextLabel = series.valueLabels.showTextLabel;
-                var plotAxis = series.valueLabels.plotAxis;
                 var labelFormatter = series.valueLabels.labelFormatter;
-                var xoffset = series.valueLabels.xoffset || 0;
-                var yoffset = series.valueLabels.yoffset || 0;
+                var xoffset = series.valueLabels.xoffset;
+                var yoffset = series.valueLabels.yoffset;
                 var xoffsetMin = series.valueLabels.xoffsetMin || xoffset;
                 var yoffsetMin = series.valueLabels.yoffsetMin || yoffset;
                 var xoffsetMax = series.valueLabels.xoffsetMax || xoffset;
@@ -71,16 +100,19 @@
                 var yoffsetLast = series.valueLabels.yoffsetLast || yoffset;
                 var valign = series.valueLabels.valign;
                 var valignLast = series.valueLabels.valignLast || valign;
-                var valignMin = series.valueLabels.valignMin || 'below';
-                var valignMax = series.valueLabels.valignMax || 'above';
+                var valignMin = series.valueLabels.valignMin;
+                var valignMax = series.valueLabels.valignMax;
                 var align = series.valueLabels.align;
-                var fontcolor = series.valueLabels.fontcolor || series.color || '#111111';
-                var shadowColor = series.valueLabels.shadowColor || fontcolor;
-                var font = series.valueLabels.font || '9pt san-serif';
+                var horizAlign = series.valueLabels.horizAlign;
+                var horizAlignMin = series.valueLabels.horizAlignMin || horizAlign;
+                var horizAlignMax = series.valueLabels.horizAlignMax || horizAlign;
+                var horizAlignLast = series.valueLabels.horizAlignLast || horizAlign;
+                var fontcolor = series.valueLabels.fontcolor || '#222222';
+                var shadowColor = series.valueLabels.shadowColor;
+                var font = series.valueLabels.font || series.xaxis.font || '9pt san-serif';
                 var hideZero = series.valueLabels.hideZero;
                 var hideSame = series.valueLabels.hideSame;
                 var reverseAlignBelowZero = series.valueLabels.reverseAlignBelowZero;
-                var insideBar = series.valueLabels.insideBar;
                 var showShadow = series.valueLabels.showShadow;
                 var useDecimalComma = series.valueLabels.useDecimalComma;
                 var stackedbar = series.stack;
@@ -92,22 +124,25 @@
 
                 // Workaround, since Flot doesn't set this value anymore
                 series.seriesIndex = ii;
-                if (showAsHtml) {
-                    plot.getPlaceholder().find("#valueLabels" + ii).remove();
-                }
-                var html = '<div id="valueLabels' + series.seriesIndex + '" class="valueLabels">';
+
                 var last_val = null;
                 var last_x = -1000;
                 var last_y = -1000;
                 var xCategories = series.xaxis.options.mode == 'categories';
                 var yCategories = series.yaxis.options.mode == 'categories';
 
+                pointDelta = (series.points.show) ? series.points.radius - series.points.lineWidth / 2 : 0;
+
                 if ((showMinValue || showMaxValue) && typeof(series.data[0]) != 'undefined') {
+                    series.data[0][0] = +series.data[0][0];
+                    series.data[0][1] = +series.data[0][1];
                     var xMin = +series.data[0][0];
                     var xMax = +series.data[0][0];
                     var yMin = +series.data[0][1];
                     var yMax = +series.data[0][1];
                     for (var i = 1; i < series.data.length; ++i) {
+                        series.data[i][0] = +series.data[i][0];
+                        series.data[i][1] = +series.data[i][1];
                         if (+series.data[i][0] < xMin) xMin = +series.data[i][0];
                         if (+series.data[i][0] > xMax) xMax = +series.data[i][0];
                         if (+series.data[i][1] < yMin) yMin = +series.data[i][1];
@@ -116,13 +151,17 @@
                 } else {
                     showMinValue = false;
                     showMaxValue = false;
+                    for (var i = 0; i < series.data.length; ++i) {
+                        series.data[i][0] = +series.data[i][0];
+                        series.data[i][1] = +series.data[i][1];
+                    }
                 }
 
-                var notShowAll = showMinValue || showMaxValue || showLastValue;
+                notShowAll = showMinValue || showMaxValue || showLastValue;
                 for (var i = 0; i < series.data.length; ++i) {
                     if (series.data[i] === null) continue;
-                    var x = series.data[i][0],
-                        y = series.data[i][1];
+                    x = series.data[i][0],
+                    y = series.data[i][1];
 
                     if (showTextLabel && series.data[i].length > 2) {
                         t = series.data[i][2];
@@ -131,48 +170,58 @@
                     }
 
                     if (notShowAll) {
-                        var doWork = false;
-                        if (showMinValue && ((yMin == y && plotAxis == 'y') || (xMin == x && plotAxis == 'x'))) {
+                        doWork = false;
+                        if (showMinValue && yMin == y && !series.bars.horizontal) {
                             doWork = true;
-                            var xdelta = xoffsetMin;
-                            var ydelta = yoffsetMin;
-                            var valignWork = valignMin;
+                            xdelta = xoffsetMin;
+                            ydelta = yoffsetMin;
+                            valignWork = valignMin;
                             showMinValue = false;
-                        } else if (showMaxValue && ((yMax == y && plotAxis == 'y') || (xMax == x && plotAxis == 'x'))) {
+                        }
+                        else if (showMinValue && xMin == x && series.bars.horizontal) {
                             doWork = true;
-                            var xdelta = xoffsetMax;
-                            var ydelta = yoffsetMax;
-                            var valignWork = valignMax;
+                            xdelta = xoffsetMin;
+                            ydelta = yoffsetMin;
+                            horizAlignWork = horizAlignMin;
+                            showMinValue = false;
+                        } else if (showMaxValue && yMax == y && !series.bars.horizontal) {
+                            doWork = true;
+                            xdelta = xoffsetMax;
+                            ydelta = yoffsetMax;
+                            valignWork = valignMax;
                             showMaxValue = false;
-                        } else if (showLastValue && i == series.data.length - 1) {
+                        } else if (showMaxValue && xMax == x && series.bars.horizontal) {
                             doWork = true;
-                            var xdelta = xoffsetLast;
-                            var ydelta = yoffsetLast;
-                            var valignWork = valignLast;
+                            xdelta = xoffsetMax;
+                            ydelta = yoffsetMax;
+                            horizAlignWork = horizAlignMax;
+                            showMaxValue = false;
+                        } else if (showLastValue && i == series.data.length - 1 && !series.bars.horizontal) {
+                            doWork = true;
+                            xdelta = xoffsetLast;
+                            ydelta = yoffsetLast;
+                            valignWork = valignLast;
+                        } else if (showLastValue && i == series.data.length - 1 && series.bars.horizontal) {
+                            doWork = true;
+                            xdelta = xoffsetLast;
+                            ydelta = yoffsetLast;
+                            horizAlignWork = horizAlignLast;
                         }
                         if (!doWork) continue;
-                    } else if (reverseAlignBelowZero && y < 0 && plotAxis == 'y') {
-                        var xdelta = xoffset;
-                        var ydelta = -1 * yoffset;
+                    } else if (reverseAlignBelowZero && y < 0 && !series.bars.horizontal) {
+                        xdelta = xoffset;
+                        ydelta = -1 * yoffset;
                         if (valign == 'above') {
                             valign = 'below';
                         } else if (valign == 'below') {
                             valign = 'above';
                         }
-                        var valignWork = valign;
-                    } else if (reverseAlignBelowZero && x < 0 && plotAxis == 'x') {
-                        var xdelta = -1 * xoffset;
-                        var ydelta = yoffset;
-                        var valignWork = valign;
-                        if (align == 'left') {
-                            align = 'right';
-                        } else if (align == 'right') {
-                            align = 'left';
-                        }
+                        valignWork = valign;
                     } else {
-                        var xdelta = xoffset;
-                        var ydelta = yoffset;
-                        var valignWork = valign;
+                        xdelta = xoffset;
+                        ydelta = yoffset;
+                        valignWork = valign;
+                        horizAlignWork = horizAlign;
                     }
 
                     // for backward compability
@@ -186,12 +235,13 @@
                     if (yCategories) {
                         y = series.yaxis.categories[y];
                     }
+
                     if (x < series.xaxis.min || x > series.xaxis.max || y < series.yaxis.min || y > series.yaxis.max) continue;
 
                     if (t !== false) {
-                        var val = t;
+                        val = t;
                     } else {
-                        var val = (plotAxis === 'x') ? x : y;
+                        val = (series.bars.horizontal) ? x : y;
                         if (val == null) {
                             val = ''
                         }
@@ -199,12 +249,7 @@
                         if (val === 0 && (hideZero || stackedbar)) continue;
 
                         if (decimals !== false) {
-                            var mult = Math.pow(10, decimals);
-                            val = Math.round(val * mult) / mult;
-                        }
-
-                        if (useDecimalComma) {
-                            val = val.toString().replace('.', ',');
+                            val = parseFloat(val).toFixed(decimals);
                         }
                     }
 
@@ -219,120 +264,157 @@
                     val = labelFormatter(val);
 
                     if (!hideSame || val != last_val || i == series.data.length - 1) {
-                        if (insideBar && plotAxis == 'x') {
+                        // if bar is too small to show value inside, show it outside
+                        if (series.bars.horizontal) {
                             ctx.font = font;
-                            if (Math.abs(series.xaxis.p2c(x) - series.xaxis.p2c(0)) < ctx.measureText(val).width + Math.abs(xdelta)) {
-                                xdelta = -1 * xdelta;
-                                if (align == 'left') {
-                                    align = 'right';
-                                } else if (align == 'right') {
-                                    align = 'left';
+                            compDelta = (useBorder || useBackground) ? 10 : 6;
+                            if (Math.abs(series.xaxis.p2c(x) - series.xaxis.p2c(0)) < ctx.measureText(val).width + Math.abs(xdelta) + compDelta) {
+                                if (horizAlignWork != 'outside') {
+                                    xdelta = -1 * xdelta;
+                                    horizAlignWork = 'outside';
                                 }
-                                fontcolor = series.color;
                             }
                         }
 
-                        ploty = y;
-                        if (valignWork == 'bottom') {
-                            ploty = 0;
-                        } else if (valignWork == 'middle') {
-                            ploty = ploty / 2;
-                            ydelta = 11 + ydelta;
-                        } else if (valignWork == 'below') {
-                            ydelta = 20 + ydelta;
+                        if (useDecimalComma) {
+                            val = val.toString().replace('.', ',');
                         }
 
                         // add up y axis for stacked series
-                        var addstack = 0;
+                        addstack = 0;
                         if (stackedbar) {
                             if (!stacked[x]) stacked[x] = 0.0;
                             addstack = stacked[x];
                             stacked[x] = stacked[x] + y;
                         }
 
-                        var xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
-                        var yy = series.yaxis.p2c(+ploty + addstack) - 12 + plot.getPlotOffset().top;
+                        xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
+                        yy = series.yaxis.p2c(y + addstack) + plot.getPlotOffset().top;
+
                         if (!hideSame || Math.abs(yy - last_y) > 20 || last_x < xx) {
                             last_val = val;
                             last_x = xx + val.length * 8;
                             last_y = yy;
-                            if (!showAsHtml) {
+                            if (series.bars.horizontal) {
+                                y_pos = yy;
+                                textBaseline = 'middle';
+                                if (x >= 0) {
+                                    if (horizAlignWork == 'outside') {
+                                        actAlign = 'left';
+                                        xdelta = xdelta + 4;
+                                    } else if (horizAlignWork == 'insideMax') {
+                                        actAlign = 'right';
+                                        xdelta = xdelta - 4;
+                                    } else if (horizAlignWork == 'insideCenter') {
+                                        actAlign = 'center';
+                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) + (series.xaxis.p2c(x) - series.xaxis.p2c(0)) / 2 + xdelta;
+                                    } else if (horizAlignWork == 'insideZero') {
+                                        actAlign = 'left';
+                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) + 3 + xdelta;
+                                    }
+                                } else {
+                                    if (horizAlignWork == 'outside') {
+                                        actAlign = 'right';
+                                        xdelta = xdelta - 4;
+                                    } else if (horizAlignWork == 'insideMax') {
+                                        actAlign = 'left';
+                                        xdelta = xdelta + 4;
+                                    } else if (horizAlignWork == 'insideCenter') {
+                                        actAlign = 'center';
+                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) + (series.xaxis.p2c(x) - series.xaxis.p2c(0)) / 2 + xdelta;
+                                    } else if (horizAlignWork == 'insideZero') {
+                                        actAlign = 'right';
+                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) - 4 + xdelta;
+                                    }
+                                }
                                 x_pos = xx + xdelta;
-                                y_pos = yy + 6 + ydelta;
+                            } else {
+                                if (valignWork == 'bottom') {
+                                    textBaseline = 'bottom';
+                                    yy = plot.getPlotOffset().top + plot.height();
+                                } else if (valignWork == 'middle') {
+                                    textBaseline = 'middle';
+                                    bot = plot.getPlotOffset().top + plot.height();
+                                    yy = (bot + yy) / 2;
+                                } else if (valignWork == 'below') {
+                                    textBaseline = 'top';
+                                    ydelta = ydelta + 4 + pointDelta;
+                                } else if (valignWork == 'above') {
+                                    textBaseline = 'bottom';
+                                    ydelta = ydelta - 2 - pointDelta;
+                                }
+
+                                x_pos = xx + xdelta;
+                                y_pos = yy + ydelta;
                                 // If the value is on the top of the canvas, we need
                                 // to push it down a little
                                 if (yy <= 0) y_pos = y_pos + 16;
                                 // The same happens with the x axis
                                 if (xx >= plot.width() + plot.getPlotOffset().left) {
                                     x_pos = plot.width() + plot.getPlotOffset().left + xdelta - 3;
-                                    var actAlign = 'right';
+                                    actAlign = 'right';
                                 } else {
-                                    var actAlign = align;
+                                    actAlign = align;
                                 }
-                                ctx.font = font;
-
-                                if (useBorder || useBackground) {
-                                    var width = ctx.measureText(val).width + 3;
-                                    if (width % 2 == 1) {
-                                        width++;
-                                    }
-                                    var height = parseInt(font, 10) + 6;
-                                    if (valignWork == 'above') {
-                                        y_pos = y_pos - 2;
-                                    }
-
-                                    if (valignWork == 'below') {
-                                        y_pos = y_pos + 2;
-                                    }
-
-                                    if (actAlign == 'right') {
-                                        var x_diff = -width + 2;
-                                    } else {
-                                        var x_diff = -width / 2;
-                                    }
-
-                                    ctx.shadowOffsetX = 0;
-                                    ctx.shadowOffsetY = 0;
-                                    ctx.shadowBlur = 0;
-                                    if (useBorder) {
-                                        ctx.strokeStyle = borderColor;
-                                        ctx.strokeRect(x_pos + x_diff, y_pos - height + 3, width, height);
-                                    }
-                                    if (useBackground) {
-                                        ctx.fillStyle = backgroundColor;
-                                        ctx.fillRect(x_pos + x_diff, y_pos - height + 3, width, height);
-                                    }
-                                }
-
-                                ctx.fillStyle = fontcolor;
-
-                                if (showShadow) {
-                                    ctx.shadowOffsetX = 0;
-                                    ctx.shadowOffsetY = 0;
-                                    ctx.shadowBlur = 1.5;
-                                    ctx.shadowColor = shadowColor;
-                                } else {
-                                    ctx.shadowBlur = 0;
-                                }
-
-                                ctx.textAlign = actAlign;
-                                ctx.fillText(val, x_pos, y_pos);
-                            } else {
-                                //allow same offsets for html rendering
-                                xx = xx + xoffset;
-                                yy = yy + 6 + yoffset;
-
-                                var head = '<div style="left:' + xx + 'px;top:' + yy + 'px;" class="valueLabel';
-                                var tail = '">' + val + '</div>';
-                                html += head + "Light" + tail + head + tail;
                             }
+                            ctx.font = font;
+
+                            if (useBorder || useBackground) {
+                                width = ctx.measureText(val).width + 5;
+                                if (width % 2 == 1) {
+                                    width++;
+                                }
+                                height = parseInt(font, 10) + 7;
+                                if (textBaseline == 'top') {
+                                    y_bb = y_pos;
+                                    y_pos = y_pos + 3;
+                                } else if (textBaseline == 'bottom') {
+                                    y_bb = y_pos - height - 2;
+                                    y_pos = y_pos - 2;
+                                } else if (textBaseline == 'middle') {
+                                    y_bb = y_pos - (height + 1) / 2;
+                                    y_pos = y_pos + 1;
+                                }
+
+                                if (actAlign == 'right') {
+                                    x_bb = x_pos - width + 1;
+                                    x_pos = x_pos - 2;
+                                } else if (actAlign == 'left') {
+                                    x_bb = x_pos;
+                                    x_pos = x_pos + 3;
+                                } else {
+                                    x_bb = x_pos - width / 2;
+                                }
+
+                                ctx.shadowOffsetX = 0;
+                                ctx.shadowOffsetY = 0;
+                                ctx.shadowBlur = 0;
+                                if (useBorder) {
+                                    ctx.strokeStyle = borderColor;
+                                    ctx.strokeRect(x_bb, y_bb, width, height);
+                                }
+                                if (useBackground) {
+                                    ctx.fillStyle = backgroundColor;
+                                    ctx.fillRect(x_bb, y_bb, width, height);
+                                }
+                            }
+
+                            ctx.fillStyle = fontcolor;
+
+                            if (showShadow) {
+                                ctx.shadowOffsetX = 0;
+                                ctx.shadowOffsetY = 0;
+                                ctx.shadowBlur = 1.5;
+                                ctx.shadowColor = shadowColor;
+                            } else {
+                                ctx.shadowBlur = 0;
+                            }
+
+                            ctx.textAlign = actAlign;
+                            ctx.textBaseline = textBaseline;
+                            ctx.fillText(val, x_pos, y_pos);
                         }
                     }
-                }
-
-                if (showAsHtml) {
-                    html += "</div>";
-                    plot.getPlaceholder().append(html);
                 }
             });
         });
@@ -341,6 +423,6 @@
         init: init,
         options: options,
         name: 'valueLabels',
-        version: '1.7.0'
+        version: '2.0.0'
     });
 })(jQuery);

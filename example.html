@@ -25,10 +25,10 @@
                 showMaxValue: true,
                 showMinValue: true,
                 showLastValue: true,
-                yoffset: 1,
-                yoffsetMin: 1,
+                yoffset: 0,
+                yoffsetMin: 0,
                 align: 'center',
-                font: "9pt 'Trebuchet MS'",
+                font: "9pt Arial",
                 fontcolor: 'blue',
                 useBorder: true,
                 useDecimalComma: true
@@ -43,12 +43,12 @@
                 showMinValue: true,
                 showMaxValue: true,
                 showLastValue: true,
-                yoffsetMax: 2,
-                yoffsetLast: 2,
+                yoffsetMax: 0,
+                yoffsetLast: 0,
                 valignMin: 'below',
                 valignMax: 'above',
                 align: 'center',
-                font: "9pt 'Trebuchet MS'",
+                font: "9pt 'Arial'",
                 fontcolor: '#FF0000',
                 useBackground: true,
                 backgroundColor: "lightblue",
@@ -78,7 +78,7 @@
                show: true,
                showMaxValue: true,
                showMinValue: true,
-               yoffset: 1,
+               yoffset: 0,
                valignMin: 'below',
                align: 'center',
                font: "9pt 'Trebuchet MS'",
@@ -101,7 +101,8 @@
          // --------------------------------------------------------------------------------------
          data =
          [{
-            data: [[1,9.2],[2,7],[3,8.5],[4,8.0],[5,11.6],[6,6],[7,5],[8,7]],
+            //data: [[1,9.2],[2,7],[3,8.5],[4,8.0],[5,11.6],[6,6],[7,5],[8,7]],
+            data: [[9.2,1],[7,2],[-3.55,3],[-1.2,4],[11.6,5],[-3,6],[5,7],[7,8]],
             color: '#222222'
          }];
 
@@ -109,25 +110,23 @@
          {
             series:
             {
-               bars: {show: true},
+               bars: {show: true, horizontal: true},
                valueLabels:
                {
                   show: true,
-                  labelFormatter: function(v)
-                  {
-                     return (+v).toFixed(1);
-                  },
-                  valign: 'top',
-                  align: 'center',
-                  font: "12pt 'Trebuchet MS'",
+                  horizAlign: 'insideMax',
+                  font: "9pt 'Trebuchet MS'",
                   useBackground: true,
+                  decimals: 1,
                   backgroundColor: "yellow",
                   useBorder: true,
-                  fontcolor: 'darkblue'
+                  fontcolor: 'darkblue',
+                  useDecimalComma: true
                }
             },
-            bars:  {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#0000FF'},
-            yaxis: {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
+            bars:  {align: "center", barWidth: 0.8, lineWidth: 1, fillColor: '#0000FF'},
+            xaxis: {min: -4, max: 12, tickSize: 1, tickDecimals: 0},
+            yaxis: {min: 0, tickSize: 1, tickDecimals: 0}
          };
 
          $.plot
@@ -154,8 +153,9 @@
                valueLabels:
                {
                   show: true,
-                  yoffset: 1,
+                  yoffset: 0,
                   align: 'center',
+                  valign: 'above',
                   font: "9pt 'Trebuchet MS'",
                   fontcolor: 'darkblue',
                   labelFormatter: function(v)
@@ -175,16 +175,16 @@
 
 <body onload="init()">
    <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
-    show only min, max and last Valuelabel
+    Show only min, max and last Valuelabel
     <div id="labelTest1" style="width: 400px; height: 300px;"></div>
    </div>
    <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
-    show only min and max Valuelabel
+    Show only min and max Valuelabel
     <div id="labelTest2" style="width: 400px; height: 300px;"></div>
    </div>
    <br><br>
    <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
-    all Valuelabels
+    Vertical bars
     <div id="labelTest3" style="width: 400px; height: 300px;"></div>
    </div>
    <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">

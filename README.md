@@ -2,12 +2,17 @@
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h2>History</h2>
-<h3> New in version 1.7 </h3>
-* Optionally use text labels instead of value labels.
-* Provide minimized script file
+<h3> New in version 2.0 </h3>
+* use strict
+* consolidated label positioning
+* horizontal bars supported now
+* new option for horizontal bars: horizAlign with possible values of 'outside', 'insideZero', 'insideCenter' and 'insideMax'
+* optionally use text labels instead of value labels.
+* provide minimized script file addionally (jquery.flot.valuelabels.min.js)
+* option useAsHtml not supported anymore
 
 <h3> New in version 1.6 </h3>
-* Option top is replaced by above (top still works)
+* option top is replaced by above (top still works)
 * new options for display label values in a box with customizable background-color and customizable border-color
     * useBackground: false, // set label into box with background color
     * backgroundColor: '#cccccc', // set backgroundColor like #FFCC00 or darkred
