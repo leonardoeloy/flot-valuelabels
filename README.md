@@ -15,6 +15,7 @@ Fixed problems with stacked graphs
 * options useAsHtml and insideBar not supported anymore
 
 <h3> New in version 1.6 </h3>
+
 * option top is replaced by above (top still works)
 * new options for display label values in a box with customizable background-color and customizable border-color
     * useBackground: false, // set label into box with background color
