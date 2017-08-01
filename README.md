@@ -6,6 +6,7 @@ For documentation have a look to the [wiki](https://github.com/winne27/flot-valu
 Fixed problems with stacked graphs
 <h3> New in version 2.0 </h3>
 * use strict
+
 * consolidated label positioning
 * horizontal bars supported now (see example below)
 * new option for horizontal bars: horizAlign with possible values 'outside', 'insideZero', 'insideCenter' or 'insideMax'
