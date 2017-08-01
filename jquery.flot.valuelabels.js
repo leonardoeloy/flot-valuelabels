@@ -285,7 +285,9 @@
                         addstack = 0;
                         if (stackedbar) {
                             var stackedIndex = x + '-' + order;
-                            if (!stacked[stackedIndex]) stacked[stackedIndex] = 0.0;
+                            if (!stacked[stackedIndex]) {
+                                stacked[stackedIndex] = 0.0;
+                            }
                             addstack = stacked[stackedIndex];
                             stacked[stackedIndex] = stacked[stackedIndex] + y;
                         }
