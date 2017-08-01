@@ -2,7 +2,7 @@
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h2>History</h2>
-<h3> New in version 2.0.1 </h3>
+<h3> Fixes in version 2.0.1 </h3>
 Fixed problems with stacked graphs
 <h3> New in version 2.0 </h3>
 * use strict
