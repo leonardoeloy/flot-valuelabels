@@ -26,12 +26,15 @@ Fixed problems with stacked graphs
 * reverseAlignBelowZero as new option
 
 <h3> New in version 1.5 </h3>
+
 * new option valign - allows placing label on top, below, in the middle or on bottom (merged from [rockcockerham](http://www.github.com/rickcockerham))
 
 <h3> New in Version 1.4 </h3>
+
 * option decimals - rounds label values to specified decimals
 
 <h3>Fixes in 1.3.5</h3>
+
 * option useDecimalComma in some cases throwed an exception
 * calculating min and max value crashed if series was empty
 
