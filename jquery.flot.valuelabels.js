@@ -121,6 +121,7 @@
                 var backgroundColor = series.valueLabels.backgroundColor;
                 var useBorder = series.valueLabels.useBorder;
                 var borderColor = series.valueLabels.borderColor;
+                var order = series.bars.order || 0;
 
                 // Workaround, since Flot doesn't set this value anymore
                 series.seriesIndex = ii;
@@ -283,9 +284,10 @@
                         // add up y axis for stacked series
                         addstack = 0;
                         if (stackedbar) {
-                            if (!stacked[x]) stacked[x] = 0.0;
-                            addstack = stacked[x];
-                            stacked[x] = stacked[x] + y;
+                            var stackedIndex = x + '-' + order;
+                            if (!stacked[stackedIndex]) stacked[stackedIndex] = 0.0;
+                            addstack = stacked[stackedIndex];
+                            stacked[stackedIndex] = stacked[stackedIndex] + y;
                         }
 
                         xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
@@ -423,6 +425,6 @@
         init: init,
         options: options,
         name: 'valueLabels',
-        version: '2.0.0'
+        version: '2.0.1'
     });
 })(jQuery);
