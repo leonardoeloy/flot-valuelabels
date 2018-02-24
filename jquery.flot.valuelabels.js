@@ -35,6 +35,7 @@
                 horizAlign: 'insideMax', // can also be 'outside', 'insideCenter' or 'insideZero'
                 xoffset: 0,
                 yoffset: 0,
+                rotate: 0,
                 useDecimalComma: false,
                 decimals: false,
                 hideZero: false,
@@ -103,6 +104,7 @@
                 var valignMin = series.valueLabels.valignMin;
                 var valignMax = series.valueLabels.valignMax;
                 var align = series.valueLabels.align;
+                var rotate = series.valueLabels.rotate || 0;
                 var horizAlign = series.valueLabels.horizAlign;
                 var horizAlignMin = series.valueLabels.horizAlignMin || horizAlign;
                 var horizAlignMax = series.valueLabels.horizAlignMax || horizAlign;
@@ -404,7 +406,7 @@
                             }
 
                             ctx.fillStyle = fontcolor;
-
+                            ctx.save();
                             if (showShadow) {
                                 ctx.shadowOffsetX = 0;
                                 ctx.shadowOffsetY = 0;
@@ -414,9 +416,15 @@
                                 ctx.shadowBlur = 0;
                             }
 
+                            ctx.translate(x_pos, y_pos);
+                            if (rotate != 0) {
+                            	ctx.rotate(rotate * Math.PI / 180);
+                            }
+
                             ctx.textAlign = actAlign;
                             ctx.textBaseline = textBaseline;
-                            ctx.fillText(val, x_pos, y_pos);
+                            ctx.fillText(val, 0, 0);
+                            ctx.restore();
                         }
                     }
                 }
@@ -427,6 +435,6 @@
         init: init,
         options: options,
         name: 'valueLabels',
-        version: '2.0.1'
+        version: '2.1.0'
     });
 })(jQuery);

@@ -2,6 +2,10 @@
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h2>History</h2>
+<h3> New in version 2.1 </h3>
+
+* new option rotate for rotating label text (e.g. vertical text label). The option value rotats the label by value degrees clockwise. 
+
 <h3> Fixes in version 2.0.1 </h3>
 Fixed problems with stacked graphs
 <h3> New in version 2.0 </h3>
