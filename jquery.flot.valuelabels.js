@@ -292,7 +292,7 @@
                             }
                             addstack = stacked[stackedIndex];
                             stacked[stackedIndex] = stacked[stackedIndex] + y;
-                            if (!series.valueLabels.show) return;
+                            if (!series.valueLabels.show) continue;
                         }
 
                         xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
