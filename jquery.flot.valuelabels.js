@@ -85,7 +85,7 @@
             var pointDelta;
 
             $.each(plot.getData(), function(ii, series) {
-                if (!series.valueLabels.show) return;
+                if (!series.valueLabels.show && !series.stack) return;
                 var showLastValue = series.valueLabels.showLastValue;
                 var showMaxValue = series.valueLabels.showMaxValue;
                 var showMinValue = series.valueLabels.showMinValue;
@@ -292,6 +292,7 @@
                             }
                             addstack = stacked[stackedIndex];
                             stacked[stackedIndex] = stacked[stackedIndex] + y;
+                            if (!series.valueLabels.show) return;
                         }
 
                         xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
