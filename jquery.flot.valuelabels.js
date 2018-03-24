@@ -264,7 +264,7 @@
                         });
                     }
                     val = "" + val;
-                    val = labelFormatter(val);
+                    val = labelFormatter(val, {series: series, point: series.data[i]});
 
                     if (!hideSame || val != last_val || i == series.data.length - 1) {
                         // if bar is too small to show value inside, show it outside
