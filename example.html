@@ -4,8 +4,8 @@
   <title>Examples flot-valuelabels</title>
   <meta charset="utf-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="https://rawgit.com/flot/flot/master/jquery.flot.js"></script>
-  <script src="https://rawgit.com/flot/flot/master/jquery.flot.navigate.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.js"></script>
   <!--
   <script src="https://rawgit.com/flot/flot/master/jquery.flot.resize.js"></script>
   <script src="https://rawgit.com/winne27/flot-valuelabels/master/jquery.flot.valuelabels.js"></script>
@@ -105,16 +105,9 @@
          // --------------------------------------------------------------------------------------
          data =
          [{
-            //data: [[1,9.2],[2,7],[3,8.5],[4,8.0],[5,11.6],[6,6],[7,5],[8,7]],
-            data: [[9.2,1],[7,2],[-3.55,3],[-1.2,4],[11.6,5],[-3,6],[5,7],[7,8]],
-            color: '#222222'
-         }];
-
-         options =
-         {
-            series:
-            {
-               bars: {show: true, horizontal: true},
+            //data: [[9.2,1],[7,2],[-3.55,3],[-1.2,4],[11.6,5],[-3,6],[5,7],[7,8]],
+            data: [[9.2,'a'],[7,'b'],[-3.55,'c'],[-1.2,'d'],[11.6,'e'],[-3,'f'],[5,'g'],[7,'h']],
+            color: '#222222',
                valueLabels:
                {
                   show: true,
@@ -127,10 +120,17 @@
                   fontcolor: 'darkblue',
                   useDecimalComma: true
                }
+         }];
+
+         options =
+         {
+            series:
+            {
+               bars: {show: true, horizontal: true}
             },
             bars:  {align: "center", barWidth: 0.8, lineWidth: 1, fillColor: '#0000FF'},
-            xaxis: {min: -4, max: 12, tickSize: 1, tickDecimals: 0},
-            yaxis: {min: 0, tickSize: 1, tickDecimals: 0}
+            xaxis: {min: -4, max: 12, tickSize: 1, tickDecimals: 0}//,
+//            yaxis: {min: 0, tickSize: 1, tickDecimals: 0}
          };
 
          $.plot
@@ -141,7 +141,7 @@
          );
 
          // --------------------------------------------------------------------------------------
-         // fourd plot example - Valuelabels formatted
+         // fourth plot example - Valuelabels formatted
          // --------------------------------------------------------------------------------------
          data =
          [{
