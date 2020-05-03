@@ -76,7 +76,8 @@
             var doWork;
             var val;
             var actAlign = 'left';
-            var addstack;
+            var addstackX;
+            var addstackY;
             var height;
             var width;
             var bot;
@@ -284,19 +285,30 @@
                         }
 
                         // add up y axis for stacked series
-                        addstack = 0;
+                        addstackX = 0;
+                        addstackY = 0;
                         if (stackedbar) {
-                            var stackedIndex = x + '-' + order;
-                            if (!stacked[stackedIndex]) {
-                                stacked[stackedIndex] = 0.0;
+                            if (series.bars.horizontal) {
+                                var stackedIndex = y + '-' + order;
+                                if (!stacked[stackedIndex]) {
+                                    stacked[stackedIndex] = 0.0;
+                                }
+                                addstackX = stacked[stackedIndex];
+                                stacked[stackedIndex] = stacked[stackedIndex] + x;
+                                if (!series.valueLabels.show) continue;
+                            } else {
+                                var stackedIndex = x + '-' + order;
+                                if (!stacked[stackedIndex]) {
+                                    stacked[stackedIndex] = 0.0;
+                                }
+                                addstackY = stacked[stackedIndex];
+                                stacked[stackedIndex] = stacked[stackedIndex] + y;
+                                if (!series.valueLabels.show) continue;
                             }
-                            addstack = stacked[stackedIndex];
-                            stacked[stackedIndex] = stacked[stackedIndex] + y;
-                            if (!series.valueLabels.show) continue;
                         }
 
-                        xx = series.xaxis.p2c(x) + plot.getPlotOffset().left;
-                        yy = series.yaxis.p2c(y + addstack) + plot.getPlotOffset().top;
+                        xx = series.xaxis.p2c(x + addstackX) + plot.getPlotOffset().left;
+                        yy = series.yaxis.p2c(y + addstackY) + plot.getPlotOffset().top;
 
                         if (!hideSame || Math.abs(yy - last_y) > 20 || last_x < xx) {
                             last_val = val;
@@ -314,10 +326,10 @@
                                         xdelta = xdelta - 4;
                                     } else if (horizAlignWork == 'insideCenter') {
                                         actAlign = 'center';
-                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) + (series.xaxis.p2c(x) - series.xaxis.p2c(0)) / 2 + xdelta;
+                                        xdelta = - (series.xaxis.p2c(x) - series.xaxis.p2c(0)) / 2 + xdelta;
                                     } else if (horizAlignWork == 'insideZero') {
                                         actAlign = 'left';
-                                        xx = plot.getPlotOffset().left + series.xaxis.p2c(0) + 3 + xdelta;
+                                        xdelta = - (series.xaxis.p2c(x) - series.xaxis.p2c(0)) + 4 + xdelta;
                                     }
                                 } else {
                                     if (horizAlignWork == 'outside') {
@@ -436,6 +448,6 @@
         init: init,
         options: options,
         name: 'valueLabels',
-        version: '2.2.0'
+        version: '2.3.0'
     });
 })(jQuery);
