@@ -1,4 +1,5 @@
 <h2>Documentation</h2>
+
 For documentation have a look to the [wiki](https://github.com/winne27/flot-valuelabels/wiki).
 
 <h2>History</h2>
