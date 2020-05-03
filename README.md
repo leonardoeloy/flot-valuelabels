@@ -73,7 +73,7 @@ You have to adjust the labels by the valuelabel options xoffset and yoffset.
 The source code of this example find [here](https://github.com/winne27/flot-valuelabels/blob/master/example2.html).
 
 <h3>Example for using text labels</h3>
-![example](https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example3.png)
+https://raw.githubusercontent.com/winne27/flot-valuelabels/master/example3.png
 
 Use option showTextLabel and deliver with the data object for every point array a text string as third entry.
 The source code of this example find [here](https://github.com/winne27/flot-valuelabels/blob/master/example3.html).
