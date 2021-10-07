@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Examples flot-valuelabels</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.js"></script>
+  <script src="https://gitcdn.link/repo/winne27/flot-valuelabels/master/jquery.flot.valuelabels.min.js"></script>
+  <script>
+      function init()
+      {
+         // --------------------------------------------------------------------------------------
+         // first plot example - show only min, max and last Valuelabel
+         // --------------------------------------------------------------------------------------
+         data =
+         [{
+            data: [[1,9],[2,7],[3,8],[4,8],[5,11.6],[6,6],[7,5.2],[8,7]],
+            color: '#222222',
+            valueLabels:
+            {
+                show: true,
+                showMaxValue: true,
+                showMinValue: true,
+                showLastValue: true,
+                yoffset: 0,
+                yoffsetMin: 0,
+                align: 'center',
+                font: "9pt Arial",
+                fontcolor: 'blue',
+                useBorder: true,
+                useDecimalComma: true
+            }
+         },
+         {
+            data: [[1,4],[2,2.3],[3,6],[4,9],[5,5],[6,3.5],[7,2.5],[8,4]],
+            color: '#FF0000',
+            valueLabels:
+            {
+                show: true,
+                showMinValue: true,
+                showMaxValue: true,
+                showLastValue: true,
+                yoffsetMax: 0,
+                yoffsetLast: 0,
+                valignMin: 'below',
+                valignMax: 'above',
+                align: 'center',
+                font: "9pt 'Arial'",
+                fontcolor: '#FF0000',
+                useBackground: true,
+                backgroundColor: "lightblue",
+                useBorder: true,
+                borderColor: 'darkred',
+                useDecimalComma: false
+            }
+         }];
+
+         options =
+         {
+            series: {lines: {show: true}},
+            yaxis: {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
+         };
+
+         $.plot($('#labelTest1'),data,options);
+
+         // --------------------------------------------------------------------------------------
+         // second plot example - show only min and max Valuelabel
+         // --------------------------------------------------------------------------------------
+         data =
+         [{
+            data: [[1,9],[2,7],[3,8],[4,8],[5,11.6],[6,6],[7,5],[8,7]],
+            color: '#222222',
+            valueLabels:
+            {
+               show: true,
+               showMaxValue: true,
+               showMinValue: true,
+               yoffset: 0,
+               valignMin: 'below',
+               align: 'center',
+               font: "9pt 'Trebuchet MS'",
+               fontcolor: 'blue',
+               useDecimalComma: true
+            }
+         }];
+
+         options =
+         {
+            series: {bars: {show: true}},
+            bars:   {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#ffff00'},
+            pan: {interactive: true},
+            xaxis:  {panRange: [null, null]},
+            yaxis:  {min: 0, max: 14, tickSize: 2, tickDecimals: 0}
+         };
+
+         $.plot($('#labelTest2'), data, options);
+
+         // --------------------------------------------------------------------------------------
+         // third plot example - all Valuelabels
+         // --------------------------------------------------------------------------------------
+         data =
+         [{
+            data: [[9.2,1],[7,2],[-3.55,3],[-1.2,4],[11.6,5],[-3,6],[5,7],[7,8]],
+            color: '#222222',
+               valueLabels:
+               {
+                  show: true,
+                  horizAlign: 'insideMax',
+                  font: "9pt 'Trebuchet MS'",
+                  useBackground: true,
+                  decimals: 1,
+                  backgroundColor: "yellow",
+                  useBorder: true,
+                  fontcolor: 'darkblue',
+                  useDecimalComma: true
+               }
+         }];
+
+         options =
+         {
+            series:
+            {
+               bars: {show: true, horizontal: true}
+            },
+            bars:  {align: "center", barWidth: 0.8, lineWidth: 1, fillColor: '#0000FF'},
+            xaxis: {min: -4, max: 12, tickSize: 1, tickDecimals: 0}//,
+//            yaxis: {min: 0, tickSize: 1, tickDecimals: 0}
+         };
+
+         $.plot
+         (
+            $('#labelTest3'),
+            data,
+            options
+         );
+
+         // --------------------------------------------------------------------------------------
+         // fourth plot example - Valuelabels formatted
+         // --------------------------------------------------------------------------------------
+         data =
+         [{
+            data: [[1,1209],[2,877],[3,2400],[4,666],[5,3200],[6,1222],[7,2340],[8,1099]],
+            color: '#222222'
+         }];
+
+         options =
+         {
+            series:
+            {
+               bars: {show: true},
+               valueLabels:
+               {
+                  show: true,
+                  yoffset: 0,
+                  align: 'center',
+                  valign: 'above',
+                  font: "9pt 'Trebuchet MS'",
+                  fontcolor: 'darkblue',
+                  labelFormatter: function(v)
+                  {
+                     return '€' + v;
+                  }
+               }
+            },
+            bars:  {align: "center", barWidth: 0.7, lineWidth: 1, fillColor: '#00FFFF'},
+            yaxis: {min: 0, tickDecimals: 0},
+            pan: {interactive: true}
+         };
+
+         $.plot($('#labelTest4'), data, options);
+      }
+  </script>
+</head>
+
+<body onload="init()">
+   <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
+    Show only min, max and last Valuelabel
+    <div id="labelTest1" style="width: 400px; height: 300px;"></div>
+   </div>
+   <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
+    Show only min and max Valuelabel
+    <div id="labelTest2" style="width: 400px; height: 300px;"></div>
+   </div>
+   <br><br>
+   <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
+    Vertical bars
+    <div id="labelTest3" style="width: 400px; height: 300px;"></div>
+   </div>
+   <div style="width: 400px; display: inline-block;text-align:center;font-weight: bold;">
+    Valuelabels formatted
+    <div id="labelTest4" style="width: 400px; height: 300px;"></div>
+   </div>
+</body>
+</html>

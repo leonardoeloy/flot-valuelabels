@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Examples flot-valuelabels</title>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.navigate.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.stack.js"></script>
+  <script src="https://gitcdn.link/repo/winne27/flot-valuelabels/master/jquery.flot.valuelabels.min.js"></script>
+  <script>
+   function init()
+   {
+         // --------------------------------------------------------------------------------------
+         // first plot example - show only min, max and last Valuelabel
+         // --------------------------------------------------------------------------------------
+        var modelBardata = [{
+            label: "Accept Tests",
+            data: [[4,0], [12,1],[8,2]],
+            color: "#009900",
+            valueLabels: {
+                show: true,
+                horizAlign: "insideCenter"
+            }
+        },{
+            label: "Reject Tests",
+            data: [[2,0], [0,1],[1,2]],
+            color: "#CC0000",
+            valueLabels: {
+                show: true,
+                horizAlign: "insideCenter"
+            }
+        }];
+
+        $.plot($('#labelTest1'), modelBardata, {
+            series: {
+                stack: true,
+                bars: {
+                    show: true
+                }
+            },
+            bars: {
+                barWidth: 0.7,
+                horizontal: true,
+                align: "center"
+            },
+            legend: {
+                show: false
+            },
+            yaxis: {
+                axisLabel: "Models",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: "Verdana Arial",
+                axisLabelPadding: 10,
+                ticks: [[0,'a'],[1,'b'],[2,'c']]
+            },
+            xaxis: {
+                axisLabel: "Count",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 10
+            }
+        });
+
+    }
+ </script>
+</head>
+
+<body onload="init()">
+    <h4>Example for horizontal stacked bars</h4>
+    <div id="labelTest1" style="width: 400px; height: 300px;"></div>
+</body>
+</html>
