@@ -162,6 +162,7 @@
                 }
 
                 notShowAll = showMinValue || showMaxValue || showLastValue;
+
                 for (var i = 0; i < series.data.length; ++i) {
                     if (series.data[i] === null) continue;
                     x = series.data[i][0],
@@ -192,7 +193,8 @@
                             doWork = true;
                             xdelta = xoffsetMax;
                             ydelta = yoffsetMax;
-                            valignWork = valignMax;
+                            horizAlignWork = horizAlignMax;
+                            //valignWork = valignMax;
                             showMaxValue = false;
                         } else if (showMaxValue && xMax == x && series.bars.horizontal) {
                             doWork = true;
@@ -204,7 +206,8 @@
                             doWork = true;
                             xdelta = xoffsetLast;
                             ydelta = yoffsetLast;
-                            valignWork = valignLast;
+							horizAlignWork = horizAlignLast;
+                            //valignWork = valignLast;
                         } else if (showLastValue && i == series.data.length - 1 && series.bars.horizontal) {
                             doWork = true;
                             xdelta = xoffsetLast;
@@ -369,7 +372,7 @@
                                 // to push it down a little
                                 if (yy <= 0) y_pos = y_pos + 16;
                                 // The same happens with the x axis
-                                if (xx >= plot.width() + plot.getPlotOffset().left) {
+                                if (xx >= plot.width() + plot.getPlotOffset().left && 1 == 2) {
                                     x_pos = plot.width() + plot.getPlotOffset().left + xdelta - 3;
                                     actAlign = 'right';
                                 } else {
